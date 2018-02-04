@@ -4,6 +4,7 @@ import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleSuperClass;
+import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidReturnType;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateParameterException;
@@ -83,6 +84,33 @@ public class JBaconUtilTest {
             @JBaconTemplate("template")
             public SimpleClass template(String s) {
                 return new SimpleClass();
+            }
+
+            @Override
+            public void persist(SimpleClass simpleClass) {
+
+            }
+        };
+
+        JBaconUtil.findTemplateByName("template", jBacon);
+    }
+
+    @Test(expected = JBaconInvocationException.class)
+    public void findTemplateByNameTemplateMethodThrowsException() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
+            @Override
+            public SimpleClass getDefault() {
+                return null;
+            }
+
+            @Override
+            public SimpleClass getEmpty() {
+                return null;
+            }
+
+            @JBaconTemplate("template")
+            public SimpleClass template() throws Exception {
+                throw new Exception();
             }
 
             @Override

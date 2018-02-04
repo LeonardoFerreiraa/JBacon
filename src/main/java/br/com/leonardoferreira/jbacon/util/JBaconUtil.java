@@ -2,6 +2,7 @@ package br.com.leonardoferreira.jbacon.util;
 
 import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
+import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidReturnType;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateParameterException;
@@ -43,7 +44,7 @@ public final class JBaconUtil {
 
                     return (T) method.invoke(jBacon);
                 } catch (IllegalAccessException | InvocationTargetException e) {
-                    throw new RuntimeException(e);
+                    throw new JBaconInvocationException(e);
                 }
             }
         }

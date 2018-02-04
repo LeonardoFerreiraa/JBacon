@@ -1,8 +1,10 @@
 package br.com.leonardoferreira.jbacon.util;
 
+import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
 import org.springframework.util.StringUtils;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,8 @@ public final class BeanUtils extends org.springframework.beans.BeanUtils {
                     ignoreProperties.add(t.getName());
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            throw new JBaconInvocationException(e);
         }
 
         copyProperties(source, target, ignoreProperties.toArray(new String[0]));

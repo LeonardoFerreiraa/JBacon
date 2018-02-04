@@ -1,7 +1,9 @@
 package br.com.leonardoferreira.jbacon.util;
 
+import br.com.leonardoferreira.jbacon.domain.ExplosiveClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleInheritorClass;
+import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
 import br.com.leonardoferreira.jbacon.util.BeanUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -78,6 +80,15 @@ public class BeanUtilTest {
 
         Assertions.assertThat(target.getSimpleSuperStr())
                 .isEqualTo(source.getSimpleSuperStr());
+    }
+
+    @Test(expected = JBaconInvocationException.class)
+    public void copyNonNullWithExplosiveClass() {
+        ExplosiveClass source = new ExplosiveClass();
+        source.setStr("boooooom");
+        ExplosiveClass target = new ExplosiveClass();
+
+        BeanUtils.copyPropertiesNotNull(source, target);
     }
 
 }
