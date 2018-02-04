@@ -2,7 +2,7 @@ package br.com.leonardoferreira.jbacon;
 
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleInheritorClass;
-import br.com.leonardoferreira.jbacon.utils.BeanUtils;
+import br.com.leonardoferreira.jbacon.util.BeanUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

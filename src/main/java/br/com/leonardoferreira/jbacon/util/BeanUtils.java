@@ -1,4 +1,4 @@
-package br.com.leonardoferreira.jbacon.utils;
+package br.com.leonardoferreira.jbacon.util;
 
 import org.springframework.util.StringUtils;
 

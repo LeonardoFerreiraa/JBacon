@@ -11,13 +11,13 @@ import java.util.List;
 /**
  * Created by lferreira on 6/16/17.
  */
-public class JBaconInstance extends JBacon<SimpleClass> {
+public class SimpleJBaconInstance extends JBacon<SimpleClass> {
 
     @Getter
     private List<SimpleClass> database = new ArrayList<>();
 
     @Override
-    protected SimpleClass getDefault() {
+    public SimpleClass getDefault() {
         SimpleClass simpleClass = new SimpleClass();
 
         simpleClass.setSimpleBigDecimal(BigDecimal.ZERO);
@@ -28,12 +28,12 @@ public class JBaconInstance extends JBacon<SimpleClass> {
     }
 
     @Override
-    protected SimpleClass getEmpty() {
+    public SimpleClass getEmpty() {
         return new SimpleClass();
     }
 
     @Override
-    protected void persist(SimpleClass simpleClass) {
+    public void persist(SimpleClass simpleClass) {
         database.add(simpleClass);
     }
 
