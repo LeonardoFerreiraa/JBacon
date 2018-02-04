@@ -1,4 +1,4 @@
-package br.com.leonardoferreira.jbacon;
+package br.com.leonardoferreira.jbacon.util;
 
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleInheritorClass;

@@ -1,7 +1,7 @@
 package br.com.leonardoferreira.jbacon;
 
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
-import br.com.leonardoferreira.jbacon.factory.SimpleJBaconInstance;
+import br.com.leonardoferreira.jbacon.factory.JBaconInstance;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,18 +15,18 @@ import java.util.List;
  * Created by lferreira on 6/16/17.
  */
 @RunWith(JUnit4.class)
-public class SimpleJBaconTest {
+public class JBaconTest {
 
-    private SimpleJBaconInstance simpleJBaconInstance;
+    private JBaconInstance jBacon;
 
     @Before
     public void setup() {
-        this.simpleJBaconInstance = new SimpleJBaconInstance();
+        this.jBacon = new JBaconInstance();
     }
 
     @Test
     public void buildTest() {
-        SimpleClass build = simpleJBaconInstance.build();
+        SimpleClass build = jBacon.build();
         Assertions.assertThat(build)
                 .isNotNull();
 
@@ -48,7 +48,7 @@ public class SimpleJBaconTest {
         SimpleClass example = new SimpleClass();
         example.setSimpleStr("Example");
 
-        SimpleClass build = simpleJBaconInstance.build(example);
+        SimpleClass build = jBacon.build(example);
         Assertions.assertThat(build)
                 .isNotNull();
 
@@ -73,7 +73,7 @@ public class SimpleJBaconTest {
 
     @Test
     public void createTest() {
-        SimpleClass create = simpleJBaconInstance.create();
+        SimpleClass create = jBacon.create();
         Assertions.assertThat(create)
                 .isNotNull();
 
@@ -89,11 +89,11 @@ public class SimpleJBaconTest {
                 .isNotNull()
                 .isEqualTo(BigDecimal.ZERO);
 
-        Assertions.assertThat(simpleJBaconInstance.getDatabase())
+        Assertions.assertThat(jBacon.getDatabase())
                 .isNotNull()
                 .hasSize(1);
 
-        Assertions.assertThat(simpleJBaconInstance.getDatabase().get(0))
+        Assertions.assertThat(jBacon.getDatabase().get(0))
                 .isEqualTo(create);
     }
 
@@ -102,7 +102,7 @@ public class SimpleJBaconTest {
         SimpleClass example = new SimpleClass();
         example.setSimpleStr("Example");
 
-        SimpleClass create = simpleJBaconInstance.create(example);
+        SimpleClass create = jBacon.create(example);
         Assertions.assertThat(create)
                 .isNotNull();
 
@@ -118,11 +118,11 @@ public class SimpleJBaconTest {
                 .isNotNull()
                 .isEqualTo(BigDecimal.ZERO);
 
-        Assertions.assertThat(simpleJBaconInstance.getDatabase())
+        Assertions.assertThat(jBacon.getDatabase())
                 .isNotNull()
                 .hasSize(1);
 
-        Assertions.assertThat(simpleJBaconInstance.getDatabase().get(0))
+        Assertions.assertThat(jBacon.getDatabase().get(0))
                 .isEqualTo(create);
 
         Assertions.assertThat(example.getSimpleBigDecimal())
@@ -134,7 +134,7 @@ public class SimpleJBaconTest {
 
     @Test
     public void createListTest() {
-        List<SimpleClass> createList = simpleJBaconInstance.create(5);
+        List<SimpleClass> createList = jBacon.create(5);
         for (SimpleClass create : createList) {
             Assertions.assertThat(create)
                     .isNotNull();
@@ -152,7 +152,7 @@ public class SimpleJBaconTest {
                     .isEqualTo(BigDecimal.ZERO);
         }
 
-        Assertions.assertThat(simpleJBaconInstance.getDatabase())
+        Assertions.assertThat(jBacon.getDatabase())
                 .isNotNull()
                 .hasSize(5)
                 .isEqualTo(createList);
@@ -163,7 +163,7 @@ public class SimpleJBaconTest {
         SimpleClass example = new SimpleClass();
         example.setSimpleStr("Example");
 
-        List<SimpleClass> createList = simpleJBaconInstance.create(5, example);
+        List<SimpleClass> createList = jBacon.create(5, example);
         for (SimpleClass create : createList) {
             Assertions.assertThat(create)
                     .isNotNull();
@@ -181,7 +181,7 @@ public class SimpleJBaconTest {
                     .isEqualTo(BigDecimal.ZERO);
         }
 
-        Assertions.assertThat(simpleJBaconInstance.getDatabase())
+        Assertions.assertThat(jBacon.getDatabase())
                 .isNotNull()
                 .hasSize(5)
                 .isEqualTo(createList);
@@ -191,6 +191,48 @@ public class SimpleJBaconTest {
 
         Assertions.assertThat(example.getSimpleInteger())
                 .isNull();
+    }
+
+    @Test
+    public void buildInvalidTemplateTest() {
+        SimpleClass invalid = jBacon.build("invalid");
+
+        Assertions.assertThat(invalid)
+                .isNotNull();
+
+        Assertions.assertThat(invalid.getSimpleStr())
+                .isEqualTo("INVALID");
+
+        Assertions.assertThat(invalid.getSimpleInteger())
+                .isEqualTo(-1);
+
+        Assertions.assertThat(invalid.getSimpleBigDecimal())
+                .isEqualTo(new BigDecimal("-1.00"));
+    }
+
+    @Test
+    public void createInvalidTemplateTest() {
+        SimpleClass invalid = jBacon.create("invalid");
+
+        Assertions.assertThat(invalid)
+                .isNotNull();
+
+        Assertions.assertThat(invalid.getSimpleStr())
+                .isEqualTo("INVALID");
+
+        Assertions.assertThat(invalid.getSimpleInteger())
+                .isEqualTo(-1);
+
+        Assertions.assertThat(invalid.getSimpleBigDecimal())
+                .isEqualTo(new BigDecimal("-1.00"));
+
+        Assertions.assertThat(jBacon.getDatabase())
+                .isNotNull()
+                .hasSize(1);
+
+        Assertions.assertThat(jBacon.getDatabase().get(0))
+                .isEqualTo(invalid);
+
     }
 
 }
