@@ -4,6 +4,7 @@ import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidReturnType;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateParameterException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,22 +27,24 @@ public final class JBaconUtil {
                 continue;
             }
 
-            if (!jBaconTemplate.value().equals(templateName)) {
-                continue;
-            }
+            if (jBaconTemplate.value().equals(templateName)) {
+                try {
+                    ParameterizedType parameterizedType = (ParameterizedType) jBacon.getClass().getGenericSuperclass();
+                    Class<T> type = (Class<T>) parameterizedType.getActualTypeArguments()[0];
 
-            try {
-                ParameterizedType parameterizedType = (ParameterizedType) jBacon.getClass().getGenericSuperclass();
-                Class<T> type = (Class<T>) parameterizedType.getActualTypeArguments()[0];
+                    if (method.getParameterCount() != 0) {
+                        throw new JBaconTemplateParameterException("Template should not have parameter");
+                    }
 
-                method.setAccessible(true);
-                if (!method.getReturnType().isAssignableFrom(type)) {
-                    throw new JBaconTemplateInvalidReturnType();
+                    method.setAccessible(true);
+                    if (!method.getReturnType().isAssignableFrom(type)) {
+                        throw new JBaconTemplateInvalidReturnType();
+                    }
+
+                    return (T) method.invoke(jBacon);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
                 }
-
-                return (T) method.invoke(jBacon);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
             }
         }
 
