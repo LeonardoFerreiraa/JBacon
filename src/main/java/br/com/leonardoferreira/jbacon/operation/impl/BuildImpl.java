@@ -34,7 +34,8 @@ public class BuildImpl<T> implements Build<T> {
         if (original != null) {
             BeanUtils.copyProperties(original, example);
         }
-        BeanUtils.copyPropertiesNotNull(jBacon.getFromTemplate(templateName), example);
+        T fromTemplate = jBacon.getFromTemplate(templateName);
+        BeanUtils.copyPropertiesNotNull(fromTemplate, example);
         return example;
     }
 

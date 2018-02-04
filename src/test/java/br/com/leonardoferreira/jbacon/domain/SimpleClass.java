@@ -24,6 +24,11 @@ public class SimpleClass {
         this.simpleStr = simpleStr;
     }
 
+    public SimpleClass(String simpleStr, Integer simpleInteger) {
+        this.simpleStr = simpleStr;
+        this.simpleInteger = simpleInteger;
+    }
+
     public static SimpleClass buildExample() {
         Faker faker = new Faker();
         SimpleClass simpleClass = new SimpleClass();

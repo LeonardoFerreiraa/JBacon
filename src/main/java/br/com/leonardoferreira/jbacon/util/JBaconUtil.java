@@ -29,6 +29,7 @@ public final class JBaconUtil {
             }
 
             try {
+                method.setAccessible(true);
                 return (T) method.invoke(jBacon);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
