@@ -1,7 +1,9 @@
 group 'br.com.leonardoferreira'
-version '0.1'
+version '1.0.0'
 
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 
@@ -17,3 +19,68 @@ dependencies {
     testCompile "org.assertj:assertj-core:3.9.0"
     testCompile "junit:junit:4.12"
 }
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'JBacon'
+        packaging 'jar'
+        artifactId 'JBacon'
+        description 'JBacon is a tool inspired in Factory Bot to help organize and generate fake objects for tests.'
+        url 'https://github.com/LeonardoFerreiraa/JBacon'
+
+        scm {
+          connection 'https://github.com/LeonardoFerreiraa/JBacon'
+          developerConnection 'https://github.com/LeonardoFerreiraa/JBacon'
+          url 'https://github.com/LeonardoFerreiraa/JBacon'
+        }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'leonardoferreiraa'
+            name 'Leonardo Ferreira'
+            email 'mail@leonardoferreira.com.br'
+          }
+        }
+      }
+    }
+  }
+}
+
+
