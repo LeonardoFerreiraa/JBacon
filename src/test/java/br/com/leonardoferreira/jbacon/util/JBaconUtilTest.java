@@ -3,6 +3,8 @@ package br.com.leonardoferreira.jbacon.util;
 import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
+import br.com.leonardoferreira.jbacon.domain.SimpleSuperClass;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidReturnType;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -35,6 +37,33 @@ public class JBaconUtilTest {
         };
 
         JBaconUtil.findTemplateByName("notFound", jBacon);
+    }
+
+    @Test(expected = JBaconTemplateInvalidReturnType.class)
+    public void findTemplateByNameWithInvalidReturnTypeTest() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
+            @Override
+            public SimpleClass getDefault() {
+                return null;
+            }
+
+            @Override
+            public SimpleClass getEmpty() {
+                return null;
+            }
+
+            @JBaconTemplate("template")
+            public SimpleSuperClass template() {
+                return new SimpleSuperClass();
+            }
+
+            @Override
+            public void persist(SimpleClass simpleClass) {
+
+            }
+        };
+
+        JBaconUtil.findTemplateByName("template", jBacon);
     }
 
     @Test

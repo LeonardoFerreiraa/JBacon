@@ -2,10 +2,13 @@ package br.com.leonardoferreira.jbacon.util;
 
 import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidReturnType;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * Created by lferreira on 2/4/18
@@ -28,7 +31,14 @@ public final class JBaconUtil {
             }
 
             try {
+                ParameterizedType parameterizedType = (ParameterizedType) jBacon.getClass().getGenericSuperclass();
+                Class<T> type = (Class<T>) parameterizedType.getActualTypeArguments()[0];
+
                 method.setAccessible(true);
+                if (!method.getReturnType().isAssignableFrom(type)) {
+                    throw new JBaconTemplateInvalidReturnType();
+                }
+
                 return (T) method.invoke(jBacon);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
