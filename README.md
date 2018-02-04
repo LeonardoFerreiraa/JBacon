@@ -4,4 +4,4 @@ JBacon is a tool inspired in Factory Bot to help organize and generate fake obje
 
 # Documentation, example and instalation
 
-See [Wiki Page](https://github.com/leonardoferreiraa/jbacon)
+See [Wiki Page](https://github.com/leonardoferreiraa/jbacon/wiki)
