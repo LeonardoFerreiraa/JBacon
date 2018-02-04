@@ -22,7 +22,12 @@ public final class BeanUtils extends org.springframework.beans.BeanUtils {
 
         try {
             for (PropertyDescriptor t : targetPds) {
-                final Method method = targetClass.getMethod("get" + StringUtils.capitalize(t.getName()));
+                Method method = null;
+                try {
+                    method = targetClass.getMethod("get" + StringUtils.capitalize(t.getName()));
+                } catch (NoSuchMethodException e) {
+                    method = targetClass.getMethod("is" + StringUtils.capitalize(t.getName()));
+                }
                 if (method.invoke(target) != null) {
                     ignoreProperties.add(t.getName());
                 }
