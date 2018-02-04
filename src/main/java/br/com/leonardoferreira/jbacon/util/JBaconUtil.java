@@ -2,6 +2,7 @@ package br.com.leonardoferreira.jbacon.util;
 
 import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +11,10 @@ import java.lang.reflect.Method;
 /**
  * Created by lferreira on 2/4/18
  */
-public class JBaconUtil {
+public final class JBaconUtil {
+
+    private JBaconUtil() {
+    }
 
     @SuppressWarnings("unchecked")
     public static <T> T findTemplateByName(final String templateName, final JBacon<T> jBacon) {
@@ -31,7 +35,7 @@ public class JBaconUtil {
             }
         }
 
-        return null;
+        throw new JBaconTemplateNotFound(templateName);
     }
 
 }

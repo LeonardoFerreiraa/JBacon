@@ -1,7 +1,9 @@
 package br.com.leonardoferreira.jbacon.domain;
 
 import com.github.javafaker.Faker;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -9,6 +11,7 @@ import java.math.BigDecimal;
  * Created by lferreira on 6/16/17.
  */
 @Data
+@NoArgsConstructor
 public class SimpleClass {
 
     private String simpleStr;
@@ -16,6 +19,10 @@ public class SimpleClass {
     private Integer simpleInteger;
 
     private BigDecimal simpleBigDecimal;
+
+    public SimpleClass(String simpleStr) {
+        this.simpleStr = simpleStr;
+    }
 
     public static SimpleClass buildExample() {
         Faker faker = new Faker();
