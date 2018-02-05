@@ -83,4 +83,4 @@ uploadArchives {
   }
 }
 
-
+signArchives.onlyIf { project.hasProperty('ossrhUsername') }
