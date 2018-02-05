@@ -1,4 +1,4 @@
-# JBacon
+# JBacon :bacon:
 
 JBacon is a tool inspired in Factory Bot to help organize and generate fake objects for tests. The difference between other tools is that JBacon allows easy integration for persist the generated data into a test database.
 
