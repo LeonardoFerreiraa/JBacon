@@ -4,11 +4,13 @@ import br.com.leonardoferreira.jbacon.operation.AllOperations;
 import br.com.leonardoferreira.jbacon.operation.Build;
 import br.com.leonardoferreira.jbacon.operation.Create;
 import br.com.leonardoferreira.jbacon.operation.CreateList;
+import br.com.leonardoferreira.jbacon.operation.function.FunctionList;
 import br.com.leonardoferreira.jbacon.operation.impl.BuildImpl;
 import br.com.leonardoferreira.jbacon.operation.impl.CreateImpl;
 import br.com.leonardoferreira.jbacon.operation.impl.CreateListImpl;
 import br.com.leonardoferreira.jbacon.util.JBaconUtil;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
@@ -23,12 +25,13 @@ public abstract class JBacon<T> implements AllOperations<T> {
     private CreateList<T> createList;
 
     public JBacon() {
-        build = new BuildImpl<>(this);
-        create = new CreateImpl<>(this);
-        createList = new CreateListImpl<>(this);
+        FunctionList<T> functions = new FunctionList<>(this::getEmpty, this::getFromTemplate, this::persist);
+        build = new BuildImpl<>(functions);
+        create = new CreateImpl<>(functions);
+        createList = new CreateListImpl<>(functions);
     }
 
-    public T getFromTemplate(final String templateName) {
+    protected T getFromTemplate(final String templateName) {
         if (templateName == null) {
             return getDefault();
         }
@@ -96,11 +99,11 @@ public abstract class JBacon<T> implements AllOperations<T> {
         return createList.create(count, original, templateName);
     }
 
-    public abstract T getDefault();
+    protected abstract T getDefault();
 
-    public abstract T getEmpty();
+    protected abstract T getEmpty();
 
-    public abstract void persist(T t);
+    protected abstract void persist(T t);
 
 }
 

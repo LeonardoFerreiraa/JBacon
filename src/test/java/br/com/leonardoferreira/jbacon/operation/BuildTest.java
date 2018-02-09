@@ -4,6 +4,7 @@ import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.operation.impl.BuildImpl;
+import br.com.leonardoferreira.jbacon.util.FunctionAbstract;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +23,7 @@ public class BuildTest {
         AtomicInteger emptyIsCalled = new AtomicInteger();
         AtomicInteger defaultIsCalled = new AtomicInteger();
 
-        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
+        FunctionAbstract<SimpleClass> functionAbstract = new FunctionAbstract<SimpleClass>() {
             @Override
             public SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -41,7 +42,7 @@ public class BuildTest {
             }
         };
 
-        Build<SimpleClass> build = new BuildImpl<>(jBacon);
+        Build<SimpleClass> build = new BuildImpl<>(functionAbstract.getFunctionList());
 
         SimpleClass simpleClass = build.build();
         Assertions.assertThat(simpleClass)
@@ -62,7 +63,7 @@ public class BuildTest {
         AtomicInteger defaultIsCalled = new AtomicInteger();
         AtomicInteger templateIsCalled = new AtomicInteger();
 
-        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
+        FunctionAbstract<SimpleClass> functionAbstract = new FunctionAbstract<SimpleClass>() {
             @Override
             public SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -87,7 +88,7 @@ public class BuildTest {
             }
         };
 
-        Build<SimpleClass> build = new BuildImpl<>(jBacon);
+        Build<SimpleClass> build = new BuildImpl<>(functionAbstract.getFunctionList());
 
         SimpleClass simpleClass = build.build("template");
         Assertions.assertThat(simpleClass)
@@ -109,7 +110,7 @@ public class BuildTest {
         AtomicInteger emptyIsCalled = new AtomicInteger();
         AtomicInteger defaultIsCalled = new AtomicInteger();
 
-        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
+        FunctionAbstract<SimpleClass> functionAbstract = new FunctionAbstract<SimpleClass>() {
             @Override
             public SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -128,7 +129,7 @@ public class BuildTest {
             }
         };
 
-        Build<SimpleClass> build = new BuildImpl<>(jBacon);
+        Build<SimpleClass> build = new BuildImpl<>(functionAbstract.getFunctionList());
         SimpleClass example = new SimpleClass("buildWithExampleTest_example");
 
         SimpleClass simpleClass = build.build(example);
@@ -153,7 +154,7 @@ public class BuildTest {
         AtomicInteger defaultIsCalled = new AtomicInteger();
         AtomicInteger templateIsCalled = new AtomicInteger();
 
-        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
+        FunctionAbstract<SimpleClass> functionAbstract = new FunctionAbstract<SimpleClass>() {
             @Override
             public SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -178,7 +179,7 @@ public class BuildTest {
             }
         };
 
-        Build<SimpleClass> build = new BuildImpl<>(jBacon);
+        Build<SimpleClass> build = new BuildImpl<>(functionAbstract.getFunctionList());
         SimpleClass example = new SimpleClass("buildWithExampleAndTemplateTest_example");
 
         SimpleClass simpleClass = build.build(example, "template");
