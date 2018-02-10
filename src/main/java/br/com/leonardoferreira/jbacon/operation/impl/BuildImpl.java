@@ -1,7 +1,7 @@
 package br.com.leonardoferreira.jbacon.operation.impl;
 
-import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.operation.Build;
+import br.com.leonardoferreira.jbacon.operation.function.FunctionList;
 import br.com.leonardoferreira.jbacon.util.BeanUtils;
 import lombok.AllArgsConstructor;
 
@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class BuildImpl<T> implements Build<T> {
 
-    private JBacon<T> jBacon;
+    private FunctionList<T> functionList;
 
     @Override
     public T build() {
@@ -30,11 +30,11 @@ public class BuildImpl<T> implements Build<T> {
 
     @Override
     public T build(final T original, final String templateName) {
-        T example = jBacon.getEmpty();
+        T example = functionList.getEmpty();
         if (original != null) {
             BeanUtils.copyProperties(original, example);
         }
-        T fromTemplate = jBacon.getFromTemplate(templateName);
+        T fromTemplate = functionList.getFromTemplate(templateName);
         BeanUtils.copyPropertiesNotNull(fromTemplate, example);
         return example;
     }

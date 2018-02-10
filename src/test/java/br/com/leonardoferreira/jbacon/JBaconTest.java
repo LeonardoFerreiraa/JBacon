@@ -249,25 +249,25 @@ public class JBaconTest {
 
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
-            public SimpleClass getDefault() {
+            protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateTest", 1);
             }
 
             @Override
-            public SimpleClass getEmpty() {
+            protected SimpleClass getEmpty() {
                 emptyIsCalled.incrementAndGet();
                 return new SimpleClass();
             }
 
             @JBaconTemplate("template")
-            public SimpleClass template() {
+            protected SimpleClass template() {
                 templateIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateTest_template");
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            protected void persist(SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
@@ -296,7 +296,7 @@ public class JBaconTest {
     }
 
     @Test
-    public void createWithTemplateAndExampleTest() {
+    public void createListWithTemplateAndExampleTest() {
         AtomicInteger emptyIsCalled = new AtomicInteger();
         AtomicInteger defaultIsCalled = new AtomicInteger();
         AtomicInteger persistIsCalled = new AtomicInteger();
@@ -306,25 +306,25 @@ public class JBaconTest {
 
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
-            public SimpleClass getDefault() {
+            protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateAndExampleTest", 1);
             }
 
             @Override
-            public SimpleClass getEmpty() {
+            protected SimpleClass getEmpty() {
                 emptyIsCalled.incrementAndGet();
                 return new SimpleClass();
             }
 
             @JBaconTemplate("template")
-            public SimpleClass template() {
+            protected SimpleClass template() {
                 templateIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateAndExampleTest_template", 2);
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            protected void persist(SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
@@ -354,5 +354,38 @@ public class JBaconTest {
             Assertions.assertThat(simpleClass.getSimpleInteger())
                     .isEqualTo(2);
         }
+    }
+
+    @Test
+    public void createWithTemplateAndExampleTest() {
+        SimpleClass example = new SimpleClass("createWithTemplateAndExampleTest_example");
+
+        SimpleClass simpleClass = jBacon.create(example, "template");
+
+        Assertions.assertThat(jBacon.getDatabase())
+                .isNotEmpty()
+                .hasSize(1);
+
+        Assertions.assertThat(jBacon.getDatabase().get(0))
+                .isEqualTo(simpleClass);
+        Assertions.assertThat(simpleClass.getSimpleStr())
+                .isEqualTo(example.getSimpleStr());
+        Assertions.assertThat(simpleClass.getSimpleInteger())
+                .isEqualTo(10);
+    }
+
+    @Test
+    public void buildWithExampleAndTemplateTest() {
+        SimpleClass example = new SimpleClass("buildWithExampleAndTemplateTest_example");
+
+        SimpleClass simpleClass = jBacon.build(example, "template");
+        Assertions.assertThat(simpleClass)
+                .isNotNull();
+
+        Assertions.assertThat(simpleClass.getSimpleStr())
+                .isEqualTo(example.getSimpleStr());
+
+        Assertions.assertThat(simpleClass.getSimpleInteger())
+                .isEqualTo(10);
     }
 }

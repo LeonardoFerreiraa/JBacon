@@ -18,7 +18,7 @@ public class JBaconInstance extends JBacon<SimpleClass> {
     private List<SimpleClass> database = new ArrayList<>();
 
     @Override
-    public SimpleClass getDefault() {
+    protected SimpleClass getDefault() {
         SimpleClass simpleClass = new SimpleClass();
 
         simpleClass.setSimpleBigDecimal(BigDecimal.ZERO);
@@ -29,7 +29,7 @@ public class JBaconInstance extends JBacon<SimpleClass> {
     }
 
     @JBaconTemplate("invalid")
-    public SimpleClass invalid() {
+    protected SimpleClass invalid() {
         SimpleClass simpleClass = new SimpleClass();
         simpleClass.setSimpleStr("INVALID");
         simpleClass.setSimpleInteger(-1);
@@ -38,13 +38,20 @@ public class JBaconInstance extends JBacon<SimpleClass> {
         return simpleClass;
     }
 
+    @JBaconTemplate("template")
+    protected SimpleClass template() {
+        SimpleClass simpleClass = getDefault();
+        simpleClass.setSimpleInteger(10);
+        return simpleClass;
+    }
+
     @Override
-    public SimpleClass getEmpty() {
+    protected SimpleClass getEmpty() {
         return new SimpleClass();
     }
 
     @Override
-    public void persist(SimpleClass simpleClass) {
+    protected void persist(SimpleClass simpleClass) {
         database.add(simpleClass);
     }
 
