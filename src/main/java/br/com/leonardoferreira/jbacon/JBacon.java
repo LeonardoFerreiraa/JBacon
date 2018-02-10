@@ -23,7 +23,10 @@ public abstract class JBacon<T> implements AllOperations<T> {
 
     private CreateList<T> createList;
 
+    private JBaconUtil<T> jBaconUtil;
+
     public JBacon() {
+        jBaconUtil = new JBaconUtil<>(this);
         FunctionList<T> functions = new FunctionList<>(this::getEmpty, this::getFromTemplate, this::persist);
         build = new BuildImpl<>(functions);
         create = new CreateImpl<>(functions);
@@ -35,7 +38,7 @@ public abstract class JBacon<T> implements AllOperations<T> {
             return getDefault();
         }
 
-        return JBaconUtil.findTemplateByName(templateName, this);
+        return jBaconUtil.findTemplateByName(templateName);
     }
 
     @Override

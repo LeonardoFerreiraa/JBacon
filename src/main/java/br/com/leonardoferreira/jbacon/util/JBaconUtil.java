@@ -2,51 +2,66 @@ package br.com.leonardoferreira.jbacon.util;
 
 import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
-import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
-import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidReturnType;
-import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
-import br.com.leonardoferreira.jbacon.exception.JBaconTemplateParameterException;
+import br.com.leonardoferreira.jbacon.exception.*;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lferreira on 2/4/18
  */
-public final class JBaconUtil {
+public class JBaconUtil<T> {
 
-    private JBaconUtil() {
+    private JBacon<T> jBacon;
+
+    private Map<String, Method> templates;
+
+    public JBaconUtil(JBacon<T> jBacon) {
+        this.jBacon = jBacon;
+        this.templates = new HashMap<>();
+        validate();
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T findTemplateByName(final String templateName, final JBacon<T> jBacon) {
+    private void validate() {
         for (Method method : jBacon.getClass().getDeclaredMethods()) {
             JBaconTemplate jBaconTemplate = method.getAnnotation(JBaconTemplate.class);
             if (jBaconTemplate == null) {
                 continue;
             }
+            validate(method);
+            templates.put(jBaconTemplate.value(), method);
+        }
+    }
 
-            if (jBaconTemplate.value().equals(templateName)) {
-                try {
-                    ParameterizedType parameterizedType = (ParameterizedType) jBacon.getClass().getGenericSuperclass();
-                    Class<T> type = (Class<T>) parameterizedType.getActualTypeArguments()[0];
+    @SuppressWarnings("unchecked")
+    private void validate(Method method) {
+        ParameterizedType parameterizedType = (ParameterizedType) jBacon.getClass().getGenericSuperclass();
+        Class<T> type = (Class<T>) parameterizedType.getActualTypeArguments()[0];
 
-                    if (method.getParameterCount() != 0) {
-                        throw new JBaconTemplateParameterException("Template should not have parameter");
-                    }
+        if (method.getParameterCount() != 0) {
+            throw new JBaconTemplateParameterException("Template should not have parameter");
+        }
 
-                    method.setAccessible(true);
-                    if (!method.getReturnType().isAssignableFrom(type)) {
-                        throw new JBaconTemplateInvalidReturnType();
-                    }
+        if (!method.getReturnType().isAssignableFrom(type)) {
+            throw new JBaconTemplateInvalidReturnType("Template methods should return <T>");
+        }
 
-                    return (T) method.invoke(jBacon);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    throw new JBaconInvocationException(e);
-                }
+        if (!Modifier.isProtected(method.getModifiers())) {
+            throw new JBaconTemplateInvalidVisibility("Template methods should be protected");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public T findTemplateByName(final String templateName) {
+        try {
+            Method method = templates.get(templateName);
+            if (method != null) {
+                method.setAccessible(true);
+                return (T) method.invoke(jBacon);
             }
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new JBaconInvocationException(e);
         }
 
         throw new JBaconTemplateNotFound(templateName);

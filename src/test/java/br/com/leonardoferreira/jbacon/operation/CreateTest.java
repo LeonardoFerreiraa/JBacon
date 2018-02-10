@@ -1,10 +1,9 @@
 package br.com.leonardoferreira.jbacon.operation;
 
-import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.operation.impl.CreateImpl;
-import br.com.leonardoferreira.jbacon.util.FunctionAbstract;
+import br.com.leonardoferreira.jbacon.factory.JBaconFunctionInstance;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,27 +27,27 @@ public class CreateTest {
 
         List<SimpleClass> persisted = new ArrayList<>();
 
-        FunctionAbstract<SimpleClass> functionAbstract = new FunctionAbstract<SimpleClass>() {
+        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
             @Override
-            public SimpleClass getDefault() {
+            protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
                 return new SimpleClass("createTest");
             }
 
             @Override
-            public SimpleClass getEmpty() {
+            protected SimpleClass getEmpty() {
                 emptyIsCalled.incrementAndGet();
                 return new SimpleClass();
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            protected void persist(SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
         };
 
-        Create<SimpleClass> create = new CreateImpl<>(functionAbstract.getFunctionList());
+        Create<SimpleClass> create = new CreateImpl<>(JBaconFunctionInstance.getFunctionList());
 
         SimpleClass simpleClass = create.create();
 
@@ -74,27 +73,27 @@ public class CreateTest {
 
         List<SimpleClass> persisted = new ArrayList<>();
 
-        FunctionAbstract<SimpleClass> functionAbstract = new FunctionAbstract<SimpleClass>() {
+        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
             @Override
-            public SimpleClass getDefault() {
+            protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
                 return new SimpleClass("createWithExampleTest", 1);
             }
 
             @Override
-            public SimpleClass getEmpty() {
+            protected SimpleClass getEmpty() {
                 emptyIsCalled.incrementAndGet();
                 return new SimpleClass();
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            protected void persist(SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
         };
 
-        Create<SimpleClass> create = new CreateImpl<>(functionAbstract.getFunctionList());
+        Create<SimpleClass> create = new CreateImpl<>(JBaconFunctionInstance.getFunctionList());
         SimpleClass example = new SimpleClass("createWithExampleTest_example");
 
         SimpleClass simpleClass = create.create(example);
@@ -127,33 +126,33 @@ public class CreateTest {
 
         List<SimpleClass> persisted = new ArrayList<>();
 
-        FunctionAbstract<SimpleClass> functionAbstract = new FunctionAbstract<SimpleClass>() {
+        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
             @Override
-            public SimpleClass getDefault() {
+            protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateTest", 1);
             }
 
             @Override
-            public SimpleClass getEmpty() {
+            protected SimpleClass getEmpty() {
                 emptyIsCalled.incrementAndGet();
                 return new SimpleClass();
             }
 
             @JBaconTemplate("template")
-            public SimpleClass template() {
+            protected SimpleClass template() {
                 templateIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateTest_template");
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            protected void persist(SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
         };
 
-        Create<SimpleClass> create = new CreateImpl<>(functionAbstract.getFunctionList());
+        Create<SimpleClass> create = new CreateImpl<>(JBaconFunctionInstance.getFunctionList());
 
         SimpleClass simpleClass = create.create("template");
 
@@ -185,33 +184,33 @@ public class CreateTest {
 
         List<SimpleClass> persisted = new ArrayList<>();
 
-        FunctionAbstract<SimpleClass> functionAbstract = new FunctionAbstract<SimpleClass>() {
+        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
             @Override
-            public SimpleClass getDefault() {
+            protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateAndExampleTest", 1);
             }
 
             @Override
-            public SimpleClass getEmpty() {
+            protected SimpleClass getEmpty() {
                 emptyIsCalled.incrementAndGet();
                 return new SimpleClass();
             }
 
             @JBaconTemplate("template")
-            public SimpleClass template() {
+            protected SimpleClass template() {
                 templateIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateAndExampleTest_template", 2);
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            protected void persist(SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
         };
 
-        Create<SimpleClass> create = new CreateImpl<>(functionAbstract.getFunctionList());
+        Create<SimpleClass> create = new CreateImpl<>(JBaconFunctionInstance.getFunctionList());
         SimpleClass example = new SimpleClass("createWithTemplateAndExampleTest_example");
 
         SimpleClass simpleClass = create.create(example, "template");

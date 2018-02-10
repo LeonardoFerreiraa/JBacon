@@ -249,25 +249,25 @@ public class JBaconTest {
 
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
-            public SimpleClass getDefault() {
+            protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateTest", 1);
             }
 
             @Override
-            public SimpleClass getEmpty() {
+            protected SimpleClass getEmpty() {
                 emptyIsCalled.incrementAndGet();
                 return new SimpleClass();
             }
 
             @JBaconTemplate("template")
-            public SimpleClass template() {
+            protected SimpleClass template() {
                 templateIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateTest_template");
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            protected void persist(SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
@@ -306,25 +306,25 @@ public class JBaconTest {
 
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
-            public SimpleClass getDefault() {
+            protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateAndExampleTest", 1);
             }
 
             @Override
-            public SimpleClass getEmpty() {
+            protected SimpleClass getEmpty() {
                 emptyIsCalled.incrementAndGet();
                 return new SimpleClass();
             }
 
             @JBaconTemplate("template")
-            public SimpleClass template() {
+            protected SimpleClass template() {
                 templateIsCalled.incrementAndGet();
                 return new SimpleClass("createWithTemplateAndExampleTest_template", 2);
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            protected void persist(SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
