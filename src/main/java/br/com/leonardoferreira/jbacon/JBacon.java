@@ -10,7 +10,6 @@ import br.com.leonardoferreira.jbacon.operation.impl.CreateImpl;
 import br.com.leonardoferreira.jbacon.operation.impl.CreateListImpl;
 import br.com.leonardoferreira.jbacon.util.JBaconUtil;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
