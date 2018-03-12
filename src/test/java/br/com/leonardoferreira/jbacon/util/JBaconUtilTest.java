@@ -4,7 +4,12 @@ import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleSuperClass;
-import br.com.leonardoferreira.jbacon.exception.*;
+import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidReturnType;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidVisibility;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateParameterException;
+import br.com.leonardoferreira.jbacon.exception.ShouldNotBeCalled;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,8 +40,8 @@ public class JBaconUtilTest {
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
-
+            public void persist(final SimpleClass simpleClass) {
+                throw new ShouldNotBeCalled();
             }
         };
 
@@ -57,12 +62,13 @@ public class JBaconUtilTest {
             }
 
             @JBaconTemplate("template")
-            public SimpleClass template(String s) {
+            public SimpleClass template(final String s) {
                 return new SimpleClass();
             }
 
             @Override
-            public void persist(SimpleClass simpleClass) {
+            public void persist(final SimpleClass simpleClass) {
+                throw new ShouldNotBeCalled();
             }
         };
 
@@ -88,8 +94,8 @@ public class JBaconUtilTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                throw new ShouldNotBeCalled();
             }
         };
         new JBaconUtil<>(jBacon);
@@ -114,8 +120,8 @@ public class JBaconUtilTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                throw new ShouldNotBeCalled();
             }
         };
 
@@ -137,8 +143,8 @@ public class JBaconUtilTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                throw new ShouldNotBeCalled();
             }
         };
 
@@ -160,8 +166,8 @@ public class JBaconUtilTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                throw new ShouldNotBeCalled();
             }
 
             @JBaconTemplate("myTemplate")
@@ -192,8 +198,8 @@ public class JBaconUtilTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                throw new ShouldNotBeCalled();
             }
 
             @JBaconTemplate("template1")

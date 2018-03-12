@@ -36,7 +36,7 @@ public class BuildListTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
+            protected void persist(final SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
             }
         };
@@ -75,7 +75,7 @@ public class BuildListTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
+            protected void persist(final SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
             }
         };
@@ -131,7 +131,7 @@ public class BuildListTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
+            protected void persist(final SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
             }
         };
@@ -184,7 +184,7 @@ public class BuildListTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
+            protected void persist(final SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
             }
         };

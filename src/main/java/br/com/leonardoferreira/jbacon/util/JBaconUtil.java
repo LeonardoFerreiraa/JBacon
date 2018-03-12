@@ -2,9 +2,16 @@ package br.com.leonardoferreira.jbacon.util;
 
 import br.com.leonardoferreira.jbacon.JBacon;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
-import br.com.leonardoferreira.jbacon.exception.*;
+import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidReturnType;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidVisibility;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
+import br.com.leonardoferreira.jbacon.exception.JBaconTemplateParameterException;
 
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,11 +20,11 @@ import java.util.Map;
  */
 public class JBaconUtil<T> {
 
-    private JBacon<T> jBacon;
+    private final JBacon<T> jBacon;
 
-    private Map<String, Method> templates;
+    private final Map<String, Method> templates;
 
-    public JBaconUtil(JBacon<T> jBacon) {
+    public JBaconUtil(final JBacon<T> jBacon) {
         this.jBacon = jBacon;
         this.templates = new HashMap<>();
         validate();
@@ -35,7 +42,7 @@ public class JBaconUtil<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private void validate(Method method) {
+    private void validate(final Method method) {
         ParameterizedType parameterizedType = (ParameterizedType) jBacon.getClass().getGenericSuperclass();
         Class<T> type = (Class<T>) parameterizedType.getActualTypeArguments()[0];
 

@@ -1,7 +1,6 @@
 package br.com.leonardoferreira.jbacon.domain;
 
 import com.github.javafaker.Faker;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,11 +19,11 @@ public class SimpleClass {
 
     private BigDecimal simpleBigDecimal;
 
-    public SimpleClass(String simpleStr) {
+    public SimpleClass(final String simpleStr) {
         this.simpleStr = simpleStr;
     }
 
-    public SimpleClass(String simpleStr, Integer simpleInteger) {
+    public SimpleClass(final String simpleStr, final Integer simpleInteger) {
         this.simpleStr = simpleStr;
         this.simpleInteger = simpleInteger;
     }

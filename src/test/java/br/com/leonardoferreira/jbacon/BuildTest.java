@@ -19,6 +19,7 @@ public class BuildTest {
     public void buildTest() {
         AtomicInteger emptyIsCalled = new AtomicInteger();
         AtomicInteger defaultIsCalled = new AtomicInteger();
+        AtomicInteger persistIsCalled = new AtomicInteger();
 
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
@@ -34,8 +35,8 @@ public class BuildTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                persistIsCalled.incrementAndGet();
             }
         };
 
@@ -50,6 +51,8 @@ public class BuildTest {
                 .isEqualTo(1);
         Assertions.assertThat(defaultIsCalled.get())
                 .isEqualTo(1);
+        Assertions.assertThat(persistIsCalled.get())
+                .isZero();
     }
 
     @Test
@@ -57,6 +60,7 @@ public class BuildTest {
         AtomicInteger emptyIsCalled = new AtomicInteger();
         AtomicInteger defaultIsCalled = new AtomicInteger();
         AtomicInteger templateIsCalled = new AtomicInteger();
+        AtomicInteger persistIsCalled = new AtomicInteger();
 
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
@@ -78,8 +82,8 @@ public class BuildTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                persistIsCalled.incrementAndGet();
             }
         };
 
@@ -96,12 +100,15 @@ public class BuildTest {
                 .isZero();
         Assertions.assertThat(templateIsCalled.get())
                 .isEqualTo(1);
+        Assertions.assertThat(persistIsCalled.get())
+                .isZero();
     }
 
     @Test
     public void buildWithExampleTest() {
         AtomicInteger emptyIsCalled = new AtomicInteger();
         AtomicInteger defaultIsCalled = new AtomicInteger();
+        AtomicInteger persistIsCalled = new AtomicInteger();
 
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
@@ -117,8 +124,8 @@ public class BuildTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                persistIsCalled.incrementAndGet();
             }
         };
 
@@ -138,6 +145,8 @@ public class BuildTest {
                 .isEqualTo(1);
         Assertions.assertThat(defaultIsCalled.get())
                 .isEqualTo(1);
+        Assertions.assertThat(persistIsCalled.get())
+                .isZero();
     }
 
     @Test
@@ -145,6 +154,7 @@ public class BuildTest {
         AtomicInteger emptyIsCalled = new AtomicInteger();
         AtomicInteger defaultIsCalled = new AtomicInteger();
         AtomicInteger templateIsCalled = new AtomicInteger();
+        AtomicInteger persistIsCalled = new AtomicInteger();
 
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
@@ -166,8 +176,8 @@ public class BuildTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
-
+            protected void persist(final SimpleClass simpleClass) {
+                persistIsCalled.incrementAndGet();
             }
         };
 
@@ -189,6 +199,8 @@ public class BuildTest {
                 .isZero();
         Assertions.assertThat(templateIsCalled.get())
                 .isEqualTo(1);
+        Assertions.assertThat(persistIsCalled.get())
+                .isZero();
     }
 
 }

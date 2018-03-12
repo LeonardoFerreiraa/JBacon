@@ -4,7 +4,6 @@ import br.com.leonardoferreira.jbacon.domain.ExplosiveClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleInheritorClass;
 import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
-import br.com.leonardoferreira.jbacon.util.BeanUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

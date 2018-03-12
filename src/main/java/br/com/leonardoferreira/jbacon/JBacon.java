@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
  */
 public abstract class JBacon<T> {
 
-    private JBaconUtil<T> jBaconUtil;
+    private final JBaconUtil<T> jBaconUtil;
 
     public JBacon() {
         jBaconUtil = new JBaconUtil<>(this);

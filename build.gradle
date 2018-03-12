@@ -4,6 +4,8 @@ version '1.0.1'
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
 
 sourceCompatibility = 1.8
 
@@ -84,3 +86,17 @@ uploadArchives {
 }
 
 signArchives.onlyIf { project.hasProperty('ossrhUsername') }
+
+checkstyle {
+    toolVersion = "5.9"
+    configFile = new File(rootDir, "checkstyle.xml")
+}
+
+pmd {
+    toolVersion = "6.0.0"
+    ruleSets = [
+            "java-unusedcode",
+            "java-basic",
+            "java-design"
+    ]
+}

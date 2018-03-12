@@ -39,7 +39,7 @@ public class CreateTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
+            protected void persist(final SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
@@ -83,7 +83,7 @@ public class CreateTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
+            protected void persist(final SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
@@ -141,7 +141,7 @@ public class CreateTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
+            protected void persist(final SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
@@ -197,7 +197,7 @@ public class CreateTest {
             }
 
             @Override
-            protected void persist(SimpleClass simpleClass) {
+            protected void persist(final SimpleClass simpleClass) {
                 persistIsCalled.incrementAndGet();
                 persisted.add(simpleClass);
             }
