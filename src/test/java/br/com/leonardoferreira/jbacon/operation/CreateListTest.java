@@ -161,7 +161,7 @@ public class CreateListTest {
         Assertions.assertThat(emptyIsCalled.get())
                 .isEqualTo(5);
         Assertions.assertThat(defaultIsCalled.get())
-                .isEqualTo(0);
+                .isZero();
         Assertions.assertThat(persistIsCalled.get())
                 .isEqualTo(5);
         Assertions.assertThat(templateIsCalled.get())
@@ -221,7 +221,7 @@ public class CreateListTest {
         Assertions.assertThat(emptyIsCalled.get())
                 .isEqualTo(5);
         Assertions.assertThat(defaultIsCalled.get())
-                .isEqualTo(0);
+                .isZero();
         Assertions.assertThat(persistIsCalled.get())
                 .isEqualTo(5);
         Assertions.assertThat(templateIsCalled.get())

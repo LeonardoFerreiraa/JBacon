@@ -99,7 +99,7 @@ public class BuildTest {
         Assertions.assertThat(emptyIsCalled.get())
                 .isEqualTo(1);
         Assertions.assertThat(defaultIsCalled.get())
-                .isEqualTo(0);
+                .isZero();
         Assertions.assertThat(templateIsCalled.get())
                 .isEqualTo(1);
     }
@@ -194,7 +194,7 @@ public class BuildTest {
         Assertions.assertThat(emptyIsCalled.get())
                 .isEqualTo(1);
         Assertions.assertThat(defaultIsCalled.get())
-                .isEqualTo(0);
+                .isZero();
         Assertions.assertThat(templateIsCalled.get())
                 .isEqualTo(1);
     }

@@ -2,10 +2,12 @@ package br.com.leonardoferreira.jbacon;
 
 import br.com.leonardoferreira.jbacon.operation.AllOperations;
 import br.com.leonardoferreira.jbacon.operation.Build;
+import br.com.leonardoferreira.jbacon.operation.BuildList;
 import br.com.leonardoferreira.jbacon.operation.Create;
 import br.com.leonardoferreira.jbacon.operation.CreateList;
 import br.com.leonardoferreira.jbacon.operation.function.FunctionList;
 import br.com.leonardoferreira.jbacon.operation.impl.BuildImpl;
+import br.com.leonardoferreira.jbacon.operation.impl.BuildListImpl;
 import br.com.leonardoferreira.jbacon.operation.impl.CreateImpl;
 import br.com.leonardoferreira.jbacon.operation.impl.CreateListImpl;
 import br.com.leonardoferreira.jbacon.util.JBaconUtil;
@@ -19,6 +21,8 @@ public abstract class JBacon<T> implements AllOperations<T> {
 
     private Build<T> build;
 
+    private BuildList<T> buildList;
+
     private Create<T> create;
 
     private CreateList<T> createList;
@@ -31,6 +35,7 @@ public abstract class JBacon<T> implements AllOperations<T> {
         build = new BuildImpl<>(functions);
         create = new CreateImpl<>(functions);
         createList = new CreateListImpl<>(functions);
+        buildList = new BuildListImpl<>(functions);
     }
 
     protected T getFromTemplate(final String templateName) {
@@ -99,6 +104,26 @@ public abstract class JBacon<T> implements AllOperations<T> {
     @Override
     public List<T> create(final int count, final T original, final String templateName) {
         return createList.create(count, original, templateName);
+    }
+
+    @Override
+    public List<T> build(final int count) {
+        return buildList.build(count);
+    }
+
+    @Override
+    public List<T> build(final int count, final T original) {
+        return buildList.build(count, original);
+    }
+
+    @Override
+    public List<T> build(final int count, final String templateName) {
+        return buildList.build(count, templateName);
+    }
+
+    @Override
+    public List<T> build(final int count, final T original, final String templateName) {
+        return buildList.build(count, original, templateName);
     }
 
     protected abstract T getDefault();
