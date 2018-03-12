@@ -34,7 +34,7 @@ public class BeanUtilTest {
     }
 
     @Test
-    public void copyWithSuperClas() {
+    public void copyWithSuperClass() {
         SimpleInheritorClass source = SimpleInheritorClass.build();
         SimpleInheritorClass target = new SimpleInheritorClass();
 

@@ -1,9 +1,7 @@
-package br.com.leonardoferreira.jbacon.operation;
+package br.com.leonardoferreira.jbacon;
 
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
-import br.com.leonardoferreira.jbacon.operation.impl.CreateImpl;
-import br.com.leonardoferreira.jbacon.factory.JBaconFunctionInstance;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by lferreira on 2/4/18
  */
 @RunWith(JUnit4.class)
-public class CreateTest {
+public class CreateListTest {
 
     @Test
     public void createTest() {
@@ -27,7 +25,7 @@ public class CreateTest {
 
         List<SimpleClass> persisted = new ArrayList<>();
 
-        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
             protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -47,22 +45,21 @@ public class CreateTest {
             }
         };
 
-        Create<SimpleClass> create = new CreateImpl<>(JBaconFunctionInstance.getFunctionList());
-
-        SimpleClass simpleClass = create.create();
+        List<SimpleClass> simpleClasses = jBacon.create(5);
 
         Assertions.assertThat(emptyIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
         Assertions.assertThat(defaultIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
         Assertions.assertThat(persistIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
 
         Assertions.assertThat(persisted)
                 .isNotEmpty()
-                .hasSize(1);
-        Assertions.assertThat(persisted.get(0))
-                .isEqualTo(simpleClass);
+                .hasSize(5);
+
+        Assertions.assertThat(persisted)
+                .isEqualTo(simpleClasses);
     }
 
     @Test
@@ -73,7 +70,7 @@ public class CreateTest {
 
         List<SimpleClass> persisted = new ArrayList<>();
 
-        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
             protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -93,28 +90,28 @@ public class CreateTest {
             }
         };
 
-        Create<SimpleClass> create = new CreateImpl<>(JBaconFunctionInstance.getFunctionList());
         SimpleClass example = new SimpleClass("createWithExampleTest_example");
 
-        SimpleClass simpleClass = create.create(example);
+        List<SimpleClass> simpleClasses = jBacon.create(5, example);
 
         Assertions.assertThat(emptyIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
         Assertions.assertThat(defaultIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
         Assertions.assertThat(persistIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
 
         Assertions.assertThat(persisted)
                 .isNotEmpty()
-                .hasSize(1);
+                .hasSize(5)
+                .isEqualTo(simpleClasses);
 
-        Assertions.assertThat(persisted.get(0))
-                .isEqualTo(simpleClass);
-        Assertions.assertThat(simpleClass.getSimpleStr())
-                .isEqualTo(example.getSimpleStr());
-        Assertions.assertThat(simpleClass.getSimpleInteger())
-                .isEqualTo(1);
+        for (SimpleClass simpleClass : simpleClasses) {
+            Assertions.assertThat(simpleClass.getSimpleStr())
+                    .isEqualTo(example.getSimpleStr());
+            Assertions.assertThat(simpleClass.getSimpleInteger())
+                    .isEqualTo(1);
+        }
     }
 
     @Test
@@ -126,7 +123,7 @@ public class CreateTest {
 
         List<SimpleClass> persisted = new ArrayList<>();
 
-        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
             protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -152,27 +149,26 @@ public class CreateTest {
             }
         };
 
-        Create<SimpleClass> create = new CreateImpl<>(JBaconFunctionInstance.getFunctionList());
-
-        SimpleClass simpleClass = create.create("template");
+        List<SimpleClass> simpleClasses = jBacon.create(5, "template");
 
         Assertions.assertThat(emptyIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
         Assertions.assertThat(defaultIsCalled.get())
                 .isZero();
         Assertions.assertThat(persistIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
         Assertions.assertThat(templateIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
 
         Assertions.assertThat(persisted)
                 .isNotEmpty()
-                .hasSize(1);
+                .hasSize(5)
+                .isEqualTo(simpleClasses);
 
-        Assertions.assertThat(persisted.get(0))
-                .isEqualTo(simpleClass);
-        Assertions.assertThat(simpleClass.getSimpleStr())
-                .isEqualTo("createWithTemplateTest_template");
+        for (SimpleClass simpleClass : simpleClasses) {
+            Assertions.assertThat(simpleClass.getSimpleStr())
+                    .isEqualTo("createWithTemplateTest_template");
+        }
     }
 
     @Test
@@ -184,7 +180,7 @@ public class CreateTest {
 
         List<SimpleClass> persisted = new ArrayList<>();
 
-        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
             protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -210,29 +206,29 @@ public class CreateTest {
             }
         };
 
-        Create<SimpleClass> create = new CreateImpl<>(JBaconFunctionInstance.getFunctionList());
         SimpleClass example = new SimpleClass("createWithTemplateAndExampleTest_example");
 
-        SimpleClass simpleClass = create.create(example, "template");
+        List<SimpleClass> simpleClasses = jBacon.create(5, example, "template");
 
         Assertions.assertThat(emptyIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
         Assertions.assertThat(defaultIsCalled.get())
                 .isZero();
         Assertions.assertThat(persistIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
         Assertions.assertThat(templateIsCalled.get())
-                .isEqualTo(1);
+                .isEqualTo(5);
 
         Assertions.assertThat(persisted)
                 .isNotEmpty()
-                .hasSize(1);
+                .hasSize(5)
+                .isEqualTo(simpleClasses);
 
-        Assertions.assertThat(persisted.get(0))
-                .isEqualTo(simpleClass);
-        Assertions.assertThat(simpleClass.getSimpleStr())
-                .isEqualTo(example.getSimpleStr());
-        Assertions.assertThat(simpleClass.getSimpleInteger())
-                .isEqualTo(2);
+        for (SimpleClass simpleClass : simpleClasses) {
+            Assertions.assertThat(simpleClass.getSimpleStr())
+                    .isEqualTo(example.getSimpleStr());
+            Assertions.assertThat(simpleClass.getSimpleInteger())
+                    .isEqualTo(2);
+        }
     }
 }

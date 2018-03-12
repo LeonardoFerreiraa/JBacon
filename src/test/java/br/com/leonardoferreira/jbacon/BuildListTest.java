@@ -1,9 +1,7 @@
-package br.com.leonardoferreira.jbacon.operation;
+package br.com.leonardoferreira.jbacon;
 
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
-import br.com.leonardoferreira.jbacon.factory.JBaconFunctionInstance;
-import br.com.leonardoferreira.jbacon.operation.impl.BuildListImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +22,7 @@ public class BuildListTest {
         AtomicInteger defaultIsCalled = new AtomicInteger();
         AtomicInteger persistIsCalled = new AtomicInteger();
 
-        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
             protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -43,9 +41,7 @@ public class BuildListTest {
             }
         };
 
-        BuildList<SimpleClass> buildList = new BuildListImpl<>(JBaconFunctionInstance.getFunctionList());
-
-        List<SimpleClass> simpleClasses = buildList.build(5);
+        List<SimpleClass> simpleClasses = jBacon.build(5);
 
         Assertions.assertThat(emptyIsCalled.get())
                 .isEqualTo(5);
@@ -65,7 +61,7 @@ public class BuildListTest {
         AtomicInteger defaultIsCalled = new AtomicInteger();
         AtomicInteger persistIsCalled = new AtomicInteger();
 
-        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
             protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -84,10 +80,9 @@ public class BuildListTest {
             }
         };
 
-        BuildList<SimpleClass> build = new BuildListImpl<>(JBaconFunctionInstance.getFunctionList());
         SimpleClass example = new SimpleClass("buildWithExampleTest_example");
 
-        List<SimpleClass> simpleClasses = build.build(5, example);
+        List<SimpleClass> simpleClasses = jBacon.build(5, example);
 
         Assertions.assertThat(emptyIsCalled.get())
                 .isEqualTo(5);
@@ -116,7 +111,7 @@ public class BuildListTest {
         AtomicInteger templateIsCalled = new AtomicInteger();
 
 
-        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
             protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -141,9 +136,7 @@ public class BuildListTest {
             }
         };
 
-        BuildList<SimpleClass> build = new BuildListImpl<>(JBaconFunctionInstance.getFunctionList());
-
-        List<SimpleClass> simpleClasses = build.build(5, "template");
+        List<SimpleClass> simpleClasses = jBacon.build(5, "template");
 
         Assertions.assertThat(emptyIsCalled.get())
                 .isEqualTo(5);
@@ -171,7 +164,7 @@ public class BuildListTest {
         AtomicInteger persistIsCalled = new AtomicInteger();
         AtomicInteger templateIsCalled = new AtomicInteger();
 
-        JBaconFunctionInstance<SimpleClass> JBaconFunctionInstance = new JBaconFunctionInstance<SimpleClass>() {
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
             protected SimpleClass getDefault() {
                 defaultIsCalled.incrementAndGet();
@@ -196,10 +189,9 @@ public class BuildListTest {
             }
         };
 
-        BuildList<SimpleClass> build = new BuildListImpl<>(JBaconFunctionInstance.getFunctionList());
         SimpleClass example = new SimpleClass("buildWithTemplateAndExampleTest_example");
 
-        List<SimpleClass> simpleClasses = build.build(5, example, "template");
+        List<SimpleClass> simpleClasses = jBacon.build(5, example, "template");
 
         Assertions.assertThat(emptyIsCalled.get())
                 .isEqualTo(5);

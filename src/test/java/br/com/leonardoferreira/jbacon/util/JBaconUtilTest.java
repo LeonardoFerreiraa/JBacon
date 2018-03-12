@@ -1,13 +1,11 @@
 package br.com.leonardoferreira.jbacon.util;
 
 import br.com.leonardoferreira.jbacon.JBacon;
-import br.com.leonardoferreira.jbacon.JBaconTest;
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleSuperClass;
 import br.com.leonardoferreira.jbacon.exception.*;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -17,7 +15,6 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class JBaconUtilTest {
-
 
     @Test(expected = JBaconTemplateInvalidReturnType.class)
     public void validateWithInvalidReturnType() {
@@ -66,7 +63,6 @@ public class JBaconUtilTest {
 
             @Override
             public void persist(SimpleClass simpleClass) {
-
             }
         };
 
