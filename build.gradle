@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     compile "org.springframework:spring-beans:5.0.3.RELEASE"
-    
+
     compileOnly "org.projectlombok:lombok:1.16.20"
 
     testCompile "com.github.javafaker:javafaker:0.14"
