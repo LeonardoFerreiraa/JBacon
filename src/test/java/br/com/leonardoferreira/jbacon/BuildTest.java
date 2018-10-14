@@ -156,7 +156,6 @@ public class BuildTest {
         SimpleClass simpleClass = jBacon.build(empty ->
                 empty.setSimpleStr("buildWithLambdaExampleTest_example"));
 
-
         Assertions.assertAll("simpleClass content",
                 () -> Assertions.assertEquals(Integer.valueOf(10), simpleClass.getSimpleInteger()),
                 () -> Assertions.assertEquals("buildWithLambdaExampleTest_example", simpleClass.getSimpleStr()));

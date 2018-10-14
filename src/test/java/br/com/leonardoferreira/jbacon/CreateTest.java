@@ -277,7 +277,6 @@ public class CreateTest {
             }
         };
 
-
         SimpleClass simpleClass = jBacon.create("template", empty ->
                 empty.setSimpleStr("createWithTemplateAndLambdaExampleTest_example"));
 
