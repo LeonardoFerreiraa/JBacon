@@ -46,12 +46,12 @@ public class JBaconUtil<T> {
         ParameterizedType parameterizedType = (ParameterizedType) jBacon.getClass().getGenericSuperclass();
         Class<T> type = (Class<T>) parameterizedType.getActualTypeArguments()[0];
 
-        if (method.getParameterCount() != 0) {
-            throw new JBaconTemplateParameterException("Template should not have parameter");
-        }
-
         if (!method.getReturnType().isAssignableFrom(type)) {
             throw new JBaconTemplateInvalidReturnType("Template methods should return <T>");
+        }
+
+        if (method.getParameterCount() != 0) {
+            throw new JBaconTemplateParameterException("Template should not have parameter");
         }
 
         if (!Modifier.isProtected(method.getModifiers())) {

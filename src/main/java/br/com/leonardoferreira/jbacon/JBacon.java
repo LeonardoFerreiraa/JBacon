@@ -19,25 +19,37 @@ public abstract class JBacon<T> {
     }
 
     public T build() {
-        return build(null, null);
+        return build(null, (String) null);
     }
 
     public T build(final String templateName) {
         return build(null, templateName);
     }
 
-    public T build(final T original) {
-        return build(original, null);
+    public T build(final T example) {
+        return build(example, null);
     }
 
-    public T build(final T original, final String templateName) {
-        T example = getEmpty();
-        if (original != null) {
-            BeanUtils.copyProperties(original, example);
+    public T build(final JBaconExample<T> example) {
+        T empty = getEmpty();
+        example.apply(empty);
+        return build(empty);
+    }
+
+    public T build(final T example, final String templateName) {
+        T empty = getEmpty();
+        if (example != null) {
+            BeanUtils.copyProperties(example, empty);
         }
         T fromTemplate = findTemplateByName(templateName);
-        BeanUtils.copyPropertiesNotNull(fromTemplate, example);
-        return example;
+        BeanUtils.copyPropertiesNotNull(fromTemplate, empty);
+        return empty;
+    }
+
+    public T build(final String templateName, final JBaconExample<T> example) {
+        T empty = getEmpty();
+        example.apply(empty);
+        return build(empty, templateName);
     }
 
     public T create() {
@@ -46,22 +58,34 @@ public abstract class JBacon<T> {
         return t;
     }
 
-    public T create(final T original) {
-        T example = build(original);
-        persist(example);
-        return example;
+    public T create(final T example) {
+        T build = build(example);
+        persist(build);
+        return build;
+    }
+
+    public T create(final JBaconExample<T> example) {
+        T empty = getEmpty();
+        example.apply(empty);
+        return create(empty);
     }
 
     public T create(final String templateName) {
-        T example = build(templateName);
-        persist(example);
-        return example;
+        T build = build(templateName);
+        persist(build);
+        return build;
     }
 
-    public T create(final T original, final String templateName) {
-        T example = build(original, templateName);
-        persist(example);
-        return example;
+    public T create(final T example, final String templateName) {
+        T build = build(example, templateName);
+        persist(build);
+        return build;
+    }
+
+    public T create(final String templateName, final JBaconExample<T> example) {
+        T empty = getEmpty();
+        example.apply(empty);
+        return create(empty, templateName);
     }
 
     public List<T> create(final int count) {
@@ -70,10 +94,16 @@ public abstract class JBacon<T> {
                 .collect(Collectors.toList());
     }
 
-    public List<T> create(final int count, final T original) {
+    public List<T> create(final int count, final T example) {
         return IntStream.range(0, count).boxed()
-                .map(i -> create(original))
+                .map(i -> create(example))
                 .collect(Collectors.toList());
+    }
+
+    public List<T> create(final int count, final JBaconExample<T> example) {
+        T empty = getEmpty();
+        example.apply(empty);
+        return create(count, empty);
     }
 
     public List<T> create(final int count, final String templateName) {
@@ -82,10 +112,16 @@ public abstract class JBacon<T> {
                 .collect(Collectors.toList());
     }
 
-    public List<T> create(final int count, final T original, final String templateName) {
+    public List<T> create(final int count, final T example, final String templateName) {
         return IntStream.range(0, count).boxed()
-                .map(i -> create(original, templateName))
+                .map(i -> create(example, templateName))
                 .collect(Collectors.toList());
+    }
+
+    public List<T> create(final int count, final String templateName, final JBaconExample<T> example) {
+        T empty = getEmpty();
+        example.apply(empty);
+        return create(count, empty, templateName);
     }
 
     public List<T> build(final int count) {
@@ -94,10 +130,16 @@ public abstract class JBacon<T> {
                 .collect(Collectors.toList());
     }
 
-    public List<T> build(final int count, final T original) {
+    public List<T> build(final int count, final T example) {
         return IntStream.range(0, count).boxed()
-                .map(i -> build(original))
+                .map(i -> build(example))
                 .collect(Collectors.toList());
+    }
+
+    public List<T> build(final int count, final JBaconExample<T> example) {
+        T empty = getEmpty();
+        example.apply(empty);
+        return build(count, empty);
     }
 
     public List<T> build(final int count, final String templateName) {
@@ -106,10 +148,16 @@ public abstract class JBacon<T> {
                 .collect(Collectors.toList());
     }
 
-    public List<T> build(final int count, final T original, final String templateName) {
+    public List<T> build(final int count, final T example, final String templateName) {
         return IntStream.range(0, count).boxed()
-                .map(i -> build(original, templateName))
+                .map(i -> build(example, templateName))
                 .collect(Collectors.toList());
+    }
+
+    public List<T> build(final int count, final String templateName, final JBaconExample<T> example) {
+        T empty = getEmpty();
+        example.apply(empty);
+        return build(count, empty, templateName);
     }
 
     protected abstract T getDefault();

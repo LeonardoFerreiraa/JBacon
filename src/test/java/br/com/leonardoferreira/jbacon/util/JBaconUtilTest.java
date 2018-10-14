@@ -10,98 +10,93 @@ import br.com.leonardoferreira.jbacon.exception.JBaconTemplateInvalidVisibility;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateNotFound;
 import br.com.leonardoferreira.jbacon.exception.JBaconTemplateParameterException;
 import br.com.leonardoferreira.jbacon.exception.ShouldNotBeCalled;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by lferreira on 2/4/18
  */
-@RunWith(JUnit4.class)
 public class JBaconUtilTest {
 
-    @Test(expected = JBaconTemplateInvalidReturnType.class)
+    @Test
     public void validateWithInvalidReturnType() {
-        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
-            @Override
-            public SimpleClass getDefault() {
-                return null;
-            }
+        Assertions.assertThrows(JBaconTemplateInvalidReturnType.class, () ->
+                new JBacon<SimpleClass>() {
+                    @Override
+                    public SimpleClass getDefault() {
+                        return null;
+                    }
 
-            @Override
-            public SimpleClass getEmpty() {
-                return null;
-            }
+                    @Override
+                    public SimpleClass getEmpty() {
+                        return null;
+                    }
 
-            @JBaconTemplate("template")
-            public SimpleSuperClass template() {
-                return new SimpleSuperClass();
-            }
+                    @JBaconTemplate("template")
+                    public SimpleSuperClass template() {
+                        return new SimpleSuperClass();
+                    }
 
-            @Override
-            public void persist(final SimpleClass simpleClass) {
-                throw new ShouldNotBeCalled();
-            }
-        };
-
-        new JBaconUtil<>(jBacon);
+                    @Override
+                    public void persist(final SimpleClass simpleClass) {
+                        throw new ShouldNotBeCalled();
+                    }
+                });
     }
 
-    @Test(expected = JBaconTemplateParameterException.class)
+    @Test
     public void validateWithInvalidParameterNumber() {
-        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
-            @Override
-            public SimpleClass getDefault() {
-                return null;
-            }
+        Assertions.assertThrows(JBaconTemplateParameterException.class, () ->
+                new JBacon<SimpleClass>() {
+                    @Override
+                    public SimpleClass getDefault() {
+                        return null;
+                    }
 
-            @Override
-            public SimpleClass getEmpty() {
-                return null;
-            }
+                    @Override
+                    public SimpleClass getEmpty() {
+                        return null;
+                    }
 
-            @JBaconTemplate("template")
-            public SimpleClass template(final String s) {
-                return new SimpleClass();
-            }
+                    @JBaconTemplate("template")
+                    public SimpleClass template(final String s) {
+                        return new SimpleClass();
+                    }
 
-            @Override
-            public void persist(final SimpleClass simpleClass) {
-                throw new ShouldNotBeCalled();
-            }
-        };
-
-        new JBaconUtil<>(jBacon);
+                    @Override
+                    public void persist(final SimpleClass simpleClass) {
+                        throw new ShouldNotBeCalled();
+                    }
+                });
     }
 
-    @Test(expected = JBaconTemplateInvalidVisibility.class)
+    @Test
     public void validateTemplateNotProtected() {
-        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
-            @Override
-            protected SimpleClass getDefault() {
-                return null;
-            }
+        Assertions.assertThrows(JBaconTemplateInvalidVisibility.class, () ->
+                new JBacon<SimpleClass>() {
+                    @Override
+                    protected SimpleClass getDefault() {
+                        return null;
+                    }
 
-            @Override
-            protected SimpleClass getEmpty() {
-                return null;
-            }
+                    @Override
+                    protected SimpleClass getEmpty() {
+                        return null;
+                    }
 
-            @JBaconTemplate("template")
-            public SimpleClass template() {
-                return null;
-            }
+                    @JBaconTemplate("template")
+                    public SimpleClass template() {
+                        return null;
+                    }
 
-            @Override
-            protected void persist(final SimpleClass simpleClass) {
-                throw new ShouldNotBeCalled();
-            }
-        };
-        new JBaconUtil<>(jBacon);
+                    @Override
+                    protected void persist(final SimpleClass simpleClass) {
+                        throw new ShouldNotBeCalled();
+                    }
+                });
     }
 
-    @Test(expected = JBaconInvocationException.class)
+    @Test
     public void findTemplateByNameTemplateMethodThrowsException() {
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
@@ -126,10 +121,11 @@ public class JBaconUtilTest {
         };
 
         JBaconUtil<SimpleClass> jBaconUtil = new JBaconUtil<>(jBacon);
-        jBaconUtil.findTemplateByName("template");
+        Assertions.assertThrows(JBaconInvocationException.class,
+                () -> jBaconUtil.findTemplateByName("template"));
     }
 
-    @Test(expected = JBaconTemplateNotFound.class)
+    @Test
     public void findTemplateByNameWithoutTemplatesTest() {
         JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
             @Override
@@ -149,7 +145,8 @@ public class JBaconUtilTest {
         };
 
         JBaconUtil<SimpleClass> jBaconUtil = new JBaconUtil<>(jBacon);
-        jBaconUtil.findTemplateByName("notFound");
+        Assertions.assertThrows(JBaconTemplateNotFound.class,
+                () -> jBaconUtil.findTemplateByName("notFound"));
     }
 
     @Test
@@ -178,10 +175,9 @@ public class JBaconUtilTest {
 
         JBaconUtil<SimpleClass> jBaconUtil = new JBaconUtil<>(jBacon);
         SimpleClass myTemplate = jBaconUtil.findTemplateByName("myTemplate");
-        Assertions.assertThat(myTemplate)
-                .isNotNull();
-        Assertions.assertThat(myTemplate.getSimpleStr())
-                .isEqualTo("findTemplateByNameWithOneTemplateTest");
+
+        Assertions.assertNotNull(myTemplate);
+        Assertions.assertEquals("findTemplateByNameWithOneTemplateTest", myTemplate.getSimpleStr());
     }
 
     @Test
@@ -219,23 +215,18 @@ public class JBaconUtilTest {
         };
 
         JBaconUtil<SimpleClass> jBaconUtil = new JBaconUtil<>(jBacon);
+
         SimpleClass template1 = jBaconUtil.findTemplateByName("template1");
-        Assertions.assertThat(template1)
-                .isNotNull();
-        Assertions.assertThat(template1.getSimpleStr())
-                .isEqualTo("findTemplateByNameWithManyTemplatesTest_1");
+        Assertions.assertNotNull(template1);
+        Assertions.assertEquals("findTemplateByNameWithManyTemplatesTest_1", template1.getSimpleStr());
 
         SimpleClass template2 = jBaconUtil.findTemplateByName("template2");
-        Assertions.assertThat(template2)
-                .isNotNull();
-        Assertions.assertThat(template2.getSimpleStr())
-                .isEqualTo("findTemplateByNameWithManyTemplatesTest_2");
+        Assertions.assertNotNull(template2);
+        Assertions.assertEquals("findTemplateByNameWithManyTemplatesTest_2", template2.getSimpleStr());
 
         SimpleClass template3 = jBaconUtil.findTemplateByName("template3");
-        Assertions.assertThat(template3)
-                .isNotNull();
-        Assertions.assertThat(template3.getSimpleStr())
-                .isEqualTo("findTemplateByNameWithManyTemplatesTest_3");
+        Assertions.assertNotNull(template3);
+        Assertions.assertEquals("findTemplateByNameWithManyTemplatesTest_3", template3.getSimpleStr());
     }
 
 }
