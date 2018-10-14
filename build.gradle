@@ -1,11 +1,11 @@
-group 'br.com.leonardoferreira'
-version '1.1.2'
+group "br.com.leonardoferreira"
+version "1.1.2"
 
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
-apply plugin: 'checkstyle'
-apply plugin: 'pmd'
+apply plugin: "java"
+apply plugin: "maven"
+apply plugin: "signing"
+apply plugin: "checkstyle"
+apply plugin: "pmd"
 
 sourceCompatibility = 1.8
 
@@ -18,19 +18,19 @@ dependencies {
 
     compileOnly "org.projectlombok:lombok:1.16.20"
 
-    testCompile "com.github.javafaker:javafaker:0.14"
-    testCompile "org.assertj:assertj-core:3.9.0"
-    testCompile "junit:junit:4.12"
+    testCompile "com.github.javafaker:javafaker:0.16"
     testCompile "org.projectlombok:lombok:1.16.20"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.3.0"
+    testCompile "org.junit.jupiter:junit-jupiter-engine:5.3.0"
 }
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
+    classifier = "javadoc"
     from javadoc
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    classifier = "sources"
     from sourceSets.main.allSource
 }
 
@@ -56,30 +56,30 @@ uploadArchives {
       }
 
       pom.project {
-        name 'JBacon'
-        packaging 'jar'
-        artifactId 'JBacon'
-        description 'JBacon is a tool inspired in Factory Bot to help organize and generate fake objects for tests.'
-        url 'https://github.com/LeonardoFerreiraa/JBacon'
+        name "JBacon"
+        packaging "jar"
+        artifactId "JBacon"
+        description "JBacon is a tool inspired in Factory Bot to help organize and generate fake objects for tests."
+        url "https://github.com/LeonardoFerreiraa/JBacon"
 
         scm {
-          connection 'https://github.com/LeonardoFerreiraa/JBacon'
-          developerConnection 'https://github.com/LeonardoFerreiraa/JBacon'
-          url 'https://github.com/LeonardoFerreiraa/JBacon'
+          connection "https://github.com/LeonardoFerreiraa/JBacon"
+          developerConnection "https://github.com/LeonardoFerreiraa/JBacon"
+          url "https://github.com/LeonardoFerreiraa/JBacon"
         }
 
         licenses {
           license {
-            name 'The Apache License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            name "The Apache License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
           }
         }
 
         developers {
           developer {
-            id 'leonardoferreiraa'
-            name 'Leonardo Ferreira'
-            email 'mail@leonardoferreira.com.br'
+            id "leonardoferreiraa"
+            name "Leonardo Ferreira"
+            email "mail@leonardoferreira.com.br"
           }
         }
       }
@@ -87,18 +87,20 @@ uploadArchives {
   }
 }
 
-signArchives.onlyIf { project.hasProperty('ossrhUsername') }
+signArchives.onlyIf { project.hasProperty("ossrhUsername") }
 
 checkstyle {
-    toolVersion = "5.9"
+    toolVersion = "8.11"
     configFile = new File(rootDir, "checkstyle.xml")
 }
 
 pmd {
-    toolVersion = "6.0.0"
-    ruleSets = [
-            "java-unusedcode",
-            "java-basic",
-            "java-design"
-    ]
+    toolVersion = "6.7.0"
+    ruleSets = [ ]
+    consoleOutput = true
+    ruleSetFiles = files("pmd-ruleset.xml")
+}
+
+test {
+    useJUnitPlatform()
 }

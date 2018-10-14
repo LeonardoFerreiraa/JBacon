@@ -4,15 +4,12 @@ import br.com.leonardoferreira.jbacon.domain.ExplosiveClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleInheritorClass;
 import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by lferreira on 6/16/17.
  */
-@RunWith(JUnit4.class)
 public class BeanUtilTest {
 
     @Test
@@ -22,14 +19,10 @@ public class BeanUtilTest {
 
         BeanUtils.copyPropertiesNotNull(source, target);
 
-        Assertions.assertThat(target.getSimpleBigDecimal())
-                .isEqualTo(source.getSimpleBigDecimal());
-
-        Assertions.assertThat(target.getSimpleInteger())
-                .isEqualTo(source.getSimpleInteger());
-
-        Assertions.assertThat(target.getSimpleStr())
-                .isEqualTo(source.getSimpleStr());
+        Assertions.assertAll("target content",
+                () -> Assertions.assertEquals(source.getSimpleBigDecimal(), target.getSimpleBigDecimal()),
+                () -> Assertions.assertEquals(source.getSimpleInteger(), target.getSimpleInteger()),
+                () -> Assertions.assertEquals(source.getSimpleStr(), target.getSimpleStr()));
     }
 
     @Test
@@ -39,11 +32,9 @@ public class BeanUtilTest {
 
         BeanUtils.copyPropertiesNotNull(source, target);
 
-        Assertions.assertThat(target.getSimpleStr())
-                .isEqualTo(source.getSimpleStr());
-
-        Assertions.assertThat(target.getSimpleSuperStr())
-                .isEqualTo(source.getSimpleSuperStr());
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(source.getSimpleStr(), target.getSimpleStr()),
+                () -> Assertions.assertEquals(source.getSimpleSuperStr(), target.getSimpleSuperStr()));
     }
 
     @Test
@@ -54,15 +45,11 @@ public class BeanUtilTest {
 
         BeanUtils.copyPropertiesNotNull(source, target);
 
-        Assertions.assertThat(target.getSimpleBigDecimal())
-                .isEqualTo(source.getSimpleBigDecimal());
-
-        Assertions.assertThat(target.getSimpleInteger())
-                .isEqualTo(123321)
-                .isNotEqualTo(source.getSimpleInteger());
-
-        Assertions.assertThat(target.getSimpleStr())
-                .isEqualTo(source.getSimpleStr());
+        Assertions.assertAll("target content",
+                () -> Assertions.assertEquals(source.getSimpleBigDecimal(), target.getSimpleBigDecimal()),
+                () -> Assertions.assertEquals(source.getSimpleStr(), target.getSimpleStr()),
+                () -> Assertions.assertEquals(Integer.valueOf(123321), target.getSimpleInteger()),
+                () -> Assertions.assertNotEquals(source.getSimpleInteger(), target.getSimpleInteger()));
     }
 
     @Test
@@ -73,21 +60,21 @@ public class BeanUtilTest {
 
         BeanUtils.copyPropertiesNotNull(source, target);
 
-        Assertions.assertThat(target.getSimpleStr())
-                .isEqualTo("qwe")
-                .isNotEqualTo(source.getSimpleStr());
-
-        Assertions.assertThat(target.getSimpleSuperStr())
-                .isEqualTo(source.getSimpleSuperStr());
+        Assertions.assertAll("target content",
+                () -> Assertions.assertNotEquals(source.getSimpleStr(), target.getSimpleSuperStr()),
+                () -> Assertions.assertEquals("qwe", target.getSimpleStr()),
+                () -> Assertions.assertNotEquals(source.getSimpleStr(), target.getSimpleStr()));
     }
 
-    @Test(expected = JBaconInvocationException.class)
+    @Test
     public void copyNonNullWithExplosiveClass() {
         ExplosiveClass source = new ExplosiveClass();
         source.setStr("boooooom");
         ExplosiveClass target = new ExplosiveClass();
 
-        BeanUtils.copyPropertiesNotNull(source, target);
+        Assertions.assertThrows(JBaconInvocationException.class, () -> {
+            BeanUtils.copyPropertiesNotNull(source, target);
+        });
     }
 
 }

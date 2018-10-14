@@ -2,17 +2,13 @@ package br.com.leonardoferreira.jbacon;
 
 import br.com.leonardoferreira.jbacon.annotation.JBaconTemplate;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-
 import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by lferreira on 2/4/18
  */
-@RunWith(JUnit4.class)
 public class BuildTest {
 
     @Test
@@ -41,18 +37,13 @@ public class BuildTest {
         };
 
         SimpleClass simpleClass = jBacon.build();
-        Assertions.assertThat(simpleClass)
-                .isNotNull();
 
-        Assertions.assertThat(simpleClass.getSimpleStr())
-                .isEqualTo("buildTest");
+        Assertions.assertEquals("buildTest", simpleClass.getSimpleStr());
 
-        Assertions.assertThat(emptyIsCalled.get())
-                .isEqualTo(1);
-        Assertions.assertThat(defaultIsCalled.get())
-                .isEqualTo(1);
-        Assertions.assertThat(persistIsCalled.get())
-                .isZero();
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(1, emptyIsCalled.get()),
+                () -> Assertions.assertEquals(1, defaultIsCalled.get()),
+                () -> Assertions.assertEquals(0, persistIsCalled.get()));
     }
 
     @Test
@@ -88,20 +79,14 @@ public class BuildTest {
         };
 
         SimpleClass simpleClass = jBacon.build("template");
-        Assertions.assertThat(simpleClass)
-                .isNotNull();
 
-        Assertions.assertThat(simpleClass.getSimpleStr())
-                .isEqualTo("buildWithTemplateTest_template");
+        Assertions.assertEquals("buildWithTemplateTest_template", simpleClass.getSimpleStr());
 
-        Assertions.assertThat(emptyIsCalled.get())
-                .isEqualTo(1);
-        Assertions.assertThat(defaultIsCalled.get())
-                .isZero();
-        Assertions.assertThat(templateIsCalled.get())
-                .isEqualTo(1);
-        Assertions.assertThat(persistIsCalled.get())
-                .isZero();
+        Assertions.assertAll("methods calls",
+                () -> Assertions.assertEquals(1, emptyIsCalled.get()),
+                () -> Assertions.assertEquals(0, defaultIsCalled.get()),
+                () -> Assertions.assertEquals(1, templateIsCalled.get()),
+                () -> Assertions.assertEquals(0, persistIsCalled.get()));
     }
 
     @Test
@@ -132,21 +117,54 @@ public class BuildTest {
         SimpleClass example = new SimpleClass("buildWithExampleTest_example");
 
         SimpleClass simpleClass = jBacon.build(example);
-        Assertions.assertThat(simpleClass)
-                .isNotNull();
 
-        Assertions.assertThat(simpleClass.getSimpleStr())
-                .isEqualTo(example.getSimpleStr());
+        Assertions.assertAll("simpleClass content",
+                () -> Assertions.assertEquals(Integer.valueOf(10), simpleClass.getSimpleInteger()),
+                () -> Assertions.assertEquals(example.getSimpleStr(), simpleClass.getSimpleStr()));
 
-        Assertions.assertThat(simpleClass.getSimpleInteger())
-                .isEqualTo(10);
+        Assertions.assertAll("methods calls",
+                () -> Assertions.assertEquals(1, emptyIsCalled.get()),
+                () -> Assertions.assertEquals(1, defaultIsCalled.get()),
+                () -> Assertions.assertEquals(0, persistIsCalled.get()));
+    }
 
-        Assertions.assertThat(emptyIsCalled.get())
-                .isEqualTo(1);
-        Assertions.assertThat(defaultIsCalled.get())
-                .isEqualTo(1);
-        Assertions.assertThat(persistIsCalled.get())
-                .isZero();
+    @Test
+    public void buildWithLambdaExampleTest() {
+        AtomicInteger emptyIsCalled = new AtomicInteger();
+        AtomicInteger defaultIsCalled = new AtomicInteger();
+        AtomicInteger persistIsCalled = new AtomicInteger();
+
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
+            @Override
+            protected SimpleClass getDefault() {
+                defaultIsCalled.incrementAndGet();
+                return new SimpleClass("buildWithLambdaExampleTest", 10);
+            }
+
+            @Override
+            protected SimpleClass getEmpty() {
+                emptyIsCalled.incrementAndGet();
+                return new SimpleClass();
+            }
+
+            @Override
+            protected void persist(final SimpleClass simpleClass) {
+                persistIsCalled.incrementAndGet();
+            }
+        };
+
+        SimpleClass simpleClass = jBacon.build(empty ->
+                empty.setSimpleStr("buildWithLambdaExampleTest_example"));
+
+
+        Assertions.assertAll("simpleClass content",
+                () -> Assertions.assertEquals(Integer.valueOf(10), simpleClass.getSimpleInteger()),
+                () -> Assertions.assertEquals("buildWithLambdaExampleTest_example", simpleClass.getSimpleStr()));
+
+        Assertions.assertAll("methods calls",
+                () -> Assertions.assertEquals(2, emptyIsCalled.get()),
+                () -> Assertions.assertEquals(1, defaultIsCalled.get()),
+                () -> Assertions.assertEquals(0, persistIsCalled.get()));
     }
 
     @Test
@@ -184,23 +202,62 @@ public class BuildTest {
         SimpleClass example = new SimpleClass("buildWithExampleAndTemplateTest_example");
 
         SimpleClass simpleClass = jBacon.build(example, "template");
-        Assertions.assertThat(simpleClass)
-                .isNotNull();
 
-        Assertions.assertThat(simpleClass.getSimpleStr())
-                .isEqualTo(example.getSimpleStr());
+        Assertions.assertAll("simpleClass content",
+                () -> Assertions.assertEquals(example.getSimpleStr(), simpleClass.getSimpleStr()),
+                () -> Assertions.assertEquals(Integer.valueOf(20), simpleClass.getSimpleInteger()));
 
-        Assertions.assertThat(simpleClass.getSimpleInteger())
-                .isEqualTo(20);
+        Assertions.assertAll("methods calls",
+                () -> Assertions.assertEquals(1, emptyIsCalled.get()),
+                () -> Assertions.assertEquals(0, defaultIsCalled.get()),
+                () -> Assertions.assertEquals(1, templateIsCalled.get()),
+                () -> Assertions.assertEquals(0, persistIsCalled.get()));
+    }
 
-        Assertions.assertThat(emptyIsCalled.get())
-                .isEqualTo(1);
-        Assertions.assertThat(defaultIsCalled.get())
-                .isZero();
-        Assertions.assertThat(templateIsCalled.get())
-                .isEqualTo(1);
-        Assertions.assertThat(persistIsCalled.get())
-                .isZero();
+    @Test
+    public void buildWithLambdaExampleAndTemplateTest() {
+        AtomicInteger emptyIsCalled = new AtomicInteger();
+        AtomicInteger defaultIsCalled = new AtomicInteger();
+        AtomicInteger templateIsCalled = new AtomicInteger();
+        AtomicInteger persistIsCalled = new AtomicInteger();
+
+        JBacon<SimpleClass> jBacon = new JBacon<SimpleClass>() {
+            @Override
+            protected SimpleClass getDefault() {
+                defaultIsCalled.incrementAndGet();
+                return new SimpleClass("buildWithLambdaExampleAndTemplateTest", 10);
+            }
+
+            @Override
+            protected SimpleClass getEmpty() {
+                emptyIsCalled.incrementAndGet();
+                return new SimpleClass();
+            }
+
+            @JBaconTemplate("template")
+            protected SimpleClass template() {
+                templateIsCalled.incrementAndGet();
+                return new SimpleClass("buildWithLambdaExampleAndTemplateTest_template", 20);
+            }
+
+            @Override
+            protected void persist(final SimpleClass simpleClass) {
+                persistIsCalled.incrementAndGet();
+            }
+        };
+
+        SimpleClass simpleClass = jBacon.build("template", empty ->
+                empty.setSimpleStr("buildWithExampleAndTemplateTest_example"));
+
+        Assertions.assertAll("simpleClass content",
+                () -> Assertions.assertEquals("buildWithExampleAndTemplateTest_example", simpleClass.getSimpleStr()),
+                () -> Assertions.assertEquals(Integer.valueOf(20), simpleClass.getSimpleInteger()));
+
+        Assertions.assertAll("methods calls",
+                () -> Assertions.assertEquals(2, emptyIsCalled.get()),
+                () -> Assertions.assertEquals(0, defaultIsCalled.get()),
+                () -> Assertions.assertEquals(1, templateIsCalled.get()),
+                () -> Assertions.assertEquals(0, persistIsCalled.get()));
     }
 
 }
