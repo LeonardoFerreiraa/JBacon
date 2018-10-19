@@ -1,9 +1,7 @@
 package br.com.leonardoferreira.jbacon.util;
 
-import br.com.leonardoferreira.jbacon.domain.ExplosiveClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleClass;
 import br.com.leonardoferreira.jbacon.domain.SimpleInheritorClass;
-import br.com.leonardoferreira.jbacon.exception.JBaconInvocationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -64,17 +62,6 @@ public class BeanUtilTest {
                 () -> Assertions.assertNotEquals(source.getSimpleStr(), target.getSimpleSuperStr()),
                 () -> Assertions.assertEquals("qwe", target.getSimpleStr()),
                 () -> Assertions.assertNotEquals(source.getSimpleStr(), target.getSimpleStr()));
-    }
-
-    @Test
-    public void copyNonNullWithExplosiveClass() {
-        ExplosiveClass source = new ExplosiveClass();
-        source.setStr("boooooom");
-        ExplosiveClass target = new ExplosiveClass();
-
-        Assertions.assertThrows(JBaconInvocationException.class, () -> {
-            BeanUtils.copyPropertiesNotNull(source, target);
-        });
     }
 
 }
