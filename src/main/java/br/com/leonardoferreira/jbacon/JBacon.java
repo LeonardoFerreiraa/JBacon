@@ -1,8 +1,6 @@
 package br.com.leonardoferreira.jbacon;
 
 import br.com.leonardoferreira.jbacon.util.BeanUtils;
-import br.com.leonardoferreira.jbacon.util.JBaconUtil;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -12,10 +10,10 @@ import java.util.stream.IntStream;
  */
 public abstract class JBacon<T> {
 
-    private final JBaconUtil<T> jBaconUtil;
+    private final TemplateResolver<T> templateResolver;
 
     public JBacon() {
-        jBaconUtil = new JBaconUtil<>(this);
+        templateResolver = new TemplateResolver<>(this);
     }
 
     public T build() {
@@ -41,7 +39,7 @@ public abstract class JBacon<T> {
         if (example != null) {
             BeanUtils.copyProperties(example, empty);
         }
-        T fromTemplate = findTemplateByName(templateName);
+        T fromTemplate = templateResolver.findTemplateByName(templateName);
         BeanUtils.copyPropertiesNotNull(fromTemplate, empty);
         return empty;
     }
@@ -166,11 +164,4 @@ public abstract class JBacon<T> {
 
     protected abstract void persist(T t);
 
-    private T findTemplateByName(final String name) {
-        if (name == null) {
-            return getDefault();
-        }
-
-        return jBaconUtil.findTemplateByName(name);
-    }
 }
