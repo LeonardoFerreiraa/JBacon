@@ -14,14 +14,14 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework:spring-beans:5.0.3.RELEASE"
+    implementation "org.springframework:spring-beans:5.0.3.RELEASE"
+    implementation "cglib:cglib:3.2.4"
 
-    compileOnly "org.projectlombok:lombok:1.16.20"
+    compileOnly "org.projectlombok:lombok:1.18.6"
 
-    testCompile "com.github.javafaker:javafaker:0.16"
-    testCompile "org.projectlombok:lombok:1.16.20"
-    testCompile "org.junit.jupiter:junit-jupiter-api:5.3.0"
-    testCompile "org.junit.jupiter:junit-jupiter-engine:5.3.0"
+    testImplementation "com.github.javafaker:javafaker:0.16"
+    testImplementation "org.projectlombok:lombok:1.18.6"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.4.0"
 }
 
 task javadocJar(type: Jar) {
@@ -86,8 +86,6 @@ uploadArchives {
     }
   }
 }
-
-signArchives.onlyIf { project.hasProperty("ossrhUsername") }
 
 checkstyle {
     toolVersion = "8.11"
