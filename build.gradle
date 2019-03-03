@@ -1,5 +1,5 @@
 group "br.com.leonardoferreira"
-version "2.0.0"
+version "2.0.1"
 
 apply plugin: "java"
 apply plugin: "maven"
@@ -59,7 +59,7 @@ uploadArchives {
         name "JBacon"
         packaging "jar"
         artifactId "JBacon"
-        description "JBacon is a tool inspired in Factory Bot to help organize and generate fake objects for tests."
+        description "A library for setting up Java objects as test data, inspired in Factory Bot."
         url "https://github.com/LeonardoFerreiraa/JBacon"
 
         scm {

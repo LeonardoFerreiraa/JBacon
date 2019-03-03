@@ -1,6 +1,6 @@
 # JBacon :bacon:
 
-A library for setting up Java objects as test data, inspired in Factory Bot
+A library for setting up Java objects as test data, inspired in [Factory Bot](https://github.com/thoughtbot/factory_bot)
 
 # Instaling
 
@@ -10,7 +10,7 @@ Maven:
 <dependency>
     <groupId>br.com.leonardoferreira</groupId>
     <artifactId>JBacon</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -18,7 +18,7 @@ Maven:
 Gradle:
 
 ```groovy
-testImplementation "br.com.leonardoferreira:JBacon:2.0.0"
+testImplementation "br.com.leonardoferreira:JBacon:2.0.1"
 ```
 
 # Usage
@@ -222,6 +222,10 @@ List<Phone> phones = phoneFactory.create(5, empty -> {
 Without Lazy this will persist 6 contacts. When uses lazy it will persist only one contact.
 
 # ChangeLog
+
+# 2.0.1 - 2019-03-03
+
+- Better project description :) 
 
 # 2.0.0 - 2019-03-03
 
