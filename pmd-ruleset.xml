@@ -113,7 +113,6 @@
 
     <!-- documentation -->
     <rule ref="category/java/documentation.xml/CommentContent"/>
-    <rule ref="category/java/documentation.xml/CommentSize"/>
     <rule ref="category/java/documentation.xml/UncommentedEmptyMethodBody"/>
     <!-- /documentation -->
 

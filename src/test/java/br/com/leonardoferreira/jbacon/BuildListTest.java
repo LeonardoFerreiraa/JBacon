@@ -7,9 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * Created by lferreira on 3/11/18
- */
 public class BuildListTest {
 
     @Test

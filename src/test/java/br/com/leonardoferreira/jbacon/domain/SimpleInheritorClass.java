@@ -4,9 +4,6 @@ import com.github.javafaker.Faker;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * Created by lferreira on 6/16/17.
- */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SimpleInheritorClass extends SimpleSuperClass {
