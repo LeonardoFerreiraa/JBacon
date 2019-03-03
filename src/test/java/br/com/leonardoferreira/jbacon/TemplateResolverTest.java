@@ -9,9 +9,6 @@ import br.com.leonardoferreira.jbacon.exception.ShouldNotBeCalled;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * Created by lferreira on 2/4/18
- */
 public class TemplateResolverTest {
 
     @Test

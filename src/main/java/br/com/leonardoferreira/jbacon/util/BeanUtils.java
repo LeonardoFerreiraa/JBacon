@@ -8,7 +8,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 /**
- * Created by lferreira on 6/16/17.
+ * Wrapper around Spring BeanUtils, to provide {@link BeanUtils#copyPropertiesNotNull}
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class BeanUtils extends org.springframework.beans.BeanUtils {

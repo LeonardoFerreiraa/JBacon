@@ -59,10 +59,10 @@ public class ContactFactory extends JBacon<Contact> {
 ## Using factories
 
 ```java
-// Returns a Contact instance that's not saved, based on default
+// Returns a Contact instance that not saved, based on default
 Contact build = contactFactory.build();
 
-// Returns a list of Contact instance that's not saved, based on default
+// Returns a list of Contact instance that not saved, based on default
 List<Contact> buildList = contactFactory.build(5);
 
 // Returns a saved Contact instance, based on default
@@ -90,7 +90,7 @@ Contact create = contactFactory.create(example);
 List<Contact> createList = contactFactory.create(5, example);
 ```
 
-Other example syntax supported
+Other example syntax supported:
 
 ```java
 Contact build = contactFactory.build(empty -> {
@@ -157,10 +157,10 @@ public class ContactFactory extends JBacon<Contact> {
 ```
 
 ```java
-// Returns a Contact instance that's not saved, based on invalid template
+// Returns a Contact instance that not saved, based on invalid template
 Contact build = contactFactory.build("invalid");
 
-// Returns a list of Contact instance that's not saved, based on invalid template
+// Returns a list of Contact instance that not saved, based on invalid template
 List<Contact> buildList = contactFactory.build(5, "invalid");
 
 // Returns a saved Contact instance, based on invalid template
@@ -173,6 +173,7 @@ List<Contact> createList = contactFactory.create(5, "invalid");
 
 # 1.2.1 - 2018-10-21
 - [Change BeanUtils to avoid call Getters and Setters](https://github.com/LeonardoFerreiraa/JBacon/pull/7)
+
 # 1.2.0 - 2018-10-14
 - [Allow use lambda to give a example #6](https://github.com/LeonardoFerreiraa/JBacon/issues/5)
 

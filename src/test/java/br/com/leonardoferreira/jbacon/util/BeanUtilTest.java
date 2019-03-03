@@ -5,9 +5,6 @@ import br.com.leonardoferreira.jbacon.domain.SimpleInheritorClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * Created by lferreira on 6/16/17.
- */
 public class BeanUtilTest {
 
     @Test

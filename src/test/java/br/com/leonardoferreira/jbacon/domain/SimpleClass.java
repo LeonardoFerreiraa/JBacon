@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-/**
- * Created by lferreira on 6/16/17.
- */
 @Data
 @NoArgsConstructor
 public class SimpleClass {
