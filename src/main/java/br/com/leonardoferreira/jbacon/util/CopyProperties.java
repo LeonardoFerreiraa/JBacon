@@ -1,6 +1,7 @@
 package br.com.leonardoferreira.jbacon.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,11 @@ public final class CopyProperties {
             fields.addAll(findAllFields(clazz.getSuperclass()));
         }
 
-        fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        fields.addAll(Arrays.stream(clazz.getDeclaredFields())
+                .filter(field -> !Modifier.isFinal(field.getModifiers()))
+                .filter(field -> !Modifier.isStatic(field.getModifiers()))
+                .collect(Collectors.toList()));
+
         return fields;
     }
 

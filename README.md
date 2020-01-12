@@ -10,7 +10,7 @@ Maven:
 <dependency>
     <groupId>br.com.leonardoferreira</groupId>
     <artifactId>JBacon</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -18,7 +18,7 @@ Maven:
 Gradle:
 
 ```groovy
-testImplementation "br.com.leonardoferreira:JBacon:2.1.0"
+testImplementation "br.com.leonardoferreira:JBacon:2.1.1"
 ```
 
 # Usage
