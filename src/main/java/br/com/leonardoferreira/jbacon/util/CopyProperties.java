@@ -8,7 +8,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 
-public class CopyProperties {
+public final class CopyProperties {
+
+    private CopyProperties() {
+    }
 
     public static void copy(final Object target, final Object source) {
         final List<Field> sourceFields = findAllFields(source.getClass());
