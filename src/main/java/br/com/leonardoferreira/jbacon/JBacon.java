@@ -1,6 +1,6 @@
 package br.com.leonardoferreira.jbacon;
 
-import br.com.leonardoferreira.jbacon.util.BeanUtils;
+import br.com.leonardoferreira.jbacon.util.CopyProperties;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -68,10 +68,10 @@ public abstract class JBacon<T> {
     public T build(final T example, final String templateName) {
         T empty = getEmpty();
         if (example != null) {
-            BeanUtils.copyProperties(example, empty);
+            CopyProperties.copy(empty, example);
         }
         T fromTemplate = templateResolver.findTemplateByName(templateName);
-        BeanUtils.copyPropertiesNotNull(fromTemplate, empty);
+        CopyProperties.copy(empty, fromTemplate);
         return empty;
     }
 

@@ -1,14 +1,15 @@
 package br.com.leonardoferreira.jbacon.domain;
 
 import com.github.javafaker.Faker;
+import java.math.BigDecimal;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 public class SimpleClass {
+
+    private static final String CONSTRAINT_VALUE = "str";
 
     private String simpleStr;
 
@@ -31,7 +32,7 @@ public class SimpleClass {
 
         simpleClass.simpleBigDecimal = BigDecimal.valueOf(faker.number().randomDouble(2, 0, 30));
         simpleClass.simpleInteger = faker.number().randomDigit();
-        simpleClass.simpleStr = faker.gameOfThrones().character();
+        simpleClass.simpleStr = faker.bool().bool() ? faker.gameOfThrones().character() : CONSTRAINT_VALUE;
 
         return simpleClass;
     }
